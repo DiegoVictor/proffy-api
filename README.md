@@ -33,10 +33,9 @@ $ npm install
 ## Configuring
 The application use just one database: [SQLite](https://www.sqlite.org/index.html).
 
-
 ### SQLite
 Store the NGOs and its incidents. For more information to how to setup your database see:
-* [knexfile.js](http://knexjs.org/#knexfile)
+* [knexfile.ts](http://knexjs.org/#knexfile)
 > You can find the application's `knexfile.ts` file in the root folder.
 
 #### Migrations
