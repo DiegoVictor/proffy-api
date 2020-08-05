@@ -13,12 +13,6 @@ export default class ClassesController {
   async index(request: Request, response: Response): Promise<Response> {
     const { week_day, subject, time } = request.query;
 
-    if (!week_day && !subject && !time) {
-      return response.status(400).json({
-        message: 'Missing filters to search classes',
-      });
-    }
-
     const timeInMinutes = convertHourtoMinutes(String(time));
     const classes = await db('classes')
       .whereExists(function () {
