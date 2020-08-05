@@ -37,7 +37,7 @@ The application use just one database: [SQLite](https://www.sqlite.org/index.htm
 ### SQLite
 Store the NGOs and its incidents. For more information to how to setup your database see:
 * [knexfile.js](http://knexjs.org/#knexfile)
-> You can find the application's `knexfile.js` file in the root folder. It already comes with `test` and `development` connection configured, so you will update it only when deploying or staging!
+> You can find the application's `knexfile.ts` file in the root folder.
 
 #### Migrations
 Remember to run the SQLite database migrations:
