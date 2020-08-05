@@ -13,7 +13,8 @@
   "scripts": {
     "dev:server": "tsnd --transpile-only --ignore-watch node_modules --respawn src/server.ts",
     "knex:migrate": "knex --knexfile knexfile.ts migrate:latest",
-    "knex:rollback": "knex --knexfile knexfile.ts migrate:rollback"
+    "knex:rollback": "knex --knexfile knexfile.ts migrate:rollback",
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/cors": "^2.8.7",
