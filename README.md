@@ -50,7 +50,7 @@ $ npx knex migrate:latest
 > See more information on [Knex Migrations](http://knexjs.org/#Migrations).
 
 ### .env
-In this file you may configure your Redis database connection, JWT settings, the environment, app's port and a url to documentation (this will be returned with error responses, see [error section](#error-handling)). Rename the `.env.example` in the root directory to `.env` then just update with your settings.
+In this file you may configure your app's port. Rename the `.env.example` in the root directory to `.env` then just update with your settings.
 
 |key|description|default
 |---|---|---
