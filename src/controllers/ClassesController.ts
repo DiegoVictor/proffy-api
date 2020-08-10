@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import db from '../database/connection';
-import convertHourtoMinutes from '../utils/convertHourtoMinutes';
+import convertHourToMinutes from '../utils/convertHourToMinutes';
 
 interface ScheduleItem {
   week_day: number;
@@ -13,7 +13,7 @@ export default class ClassesController {
   async index(request: Request, response: Response): Promise<Response> {
     const { week_day, subject, time } = request.query;
 
-    const timeInMinutes = convertHourtoMinutes(String(time));
+    const timeInMinutes = convertHourToMinutes(String(time));
     const classes = await db('classes')
       .whereExists(function () {
         this.select('class_schedule.*')
@@ -58,8 +58,8 @@ export default class ClassesController {
       const classSchedule = schedule.map((scheduleItem: ScheduleItem) => ({
         class_id,
         week_day: scheduleItem.week_day,
-        from: convertHourtoMinutes(scheduleItem.from),
-        to: convertHourtoMinutes(scheduleItem.to),
+        from: convertHourToMinutes(scheduleItem.from),
+        to: convertHourToMinutes(scheduleItem.to),
       }));
 
       await trx('class_schedule').insert(classSchedule);
