@@ -1,6 +1,21 @@
 import path from 'path';
 
-export default {
+interface DatabaseConfiguration {
+  client: string;
+  connection: {
+    filename: string;
+  };
+  migrations: {
+    directory: string;
+  };
+  useNullAsDefault: true;
+}
+
+interface DatabaseConfigurationGroup {
+  [key: string]: DatabaseConfiguration;
+}
+
+const configurations: DatabaseConfigurationGroup = {
   test: {
     client: 'sqlite3',
     connection: {
@@ -11,7 +26,6 @@ export default {
     },
     useNullAsDefault: true,
   },
-
   development: {
     client: 'sqlite3',
     connection: {
@@ -23,3 +37,5 @@ export default {
     useNullAsDefault: true,
   },
 };
+
+export default configurations;
