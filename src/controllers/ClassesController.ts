@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import db from '../database/connection';
-import convertHourToMinutes from '../utils/convertHourToMinutes';
+import convertHourToMinutes from '../utils/convertStringHourToMinutes';
 
 interface ScheduleItem {
   week_day: number;
