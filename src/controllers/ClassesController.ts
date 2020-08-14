@@ -15,6 +15,7 @@ export default class ClassesController {
   async index(request: Request, response: Response): Promise<Response> {
     const { week_day, subject, time } = request.query;
     const limit = 10;
+    const page = Number(request.query.page) || 1;
 
     const timeInMinutes = convertStringHourToMinutes(String(time));
 
