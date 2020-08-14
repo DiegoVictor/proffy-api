@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+import paginationLinks from '../helpers/paginationLinks';
 import db from '../database/connection';
 import convertHourToMinutes from '../utils/convertStringHourToMinutes';
 
@@ -33,6 +34,13 @@ export default class ClassesController {
 
     const [count] = await query().count();
     response.header('X-Total-Count', count['count(*)']);
+
+    const pages_total = Math.ceil(count['count(*)'] / limit);
+
+    if (pages_total > 1) {
+      response.links(paginationLinks(page, pages_total, current_url));
+    }
+
     return response.json(classes);
   }
 
