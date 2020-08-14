@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       APP_PORT: '3333'
+      DOCS_URL: 'https://github.com/DiegoVictor/proffy-api#errors-reference'
     steps:
       - uses: actions/setup-node@v1
         with:
