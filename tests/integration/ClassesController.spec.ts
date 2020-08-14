@@ -136,7 +136,7 @@ describe('ClassesController', () => {
       },
     ];
     const { name, avatar, whatsapp, bio } = await factory.attrs<User>('User');
-    const response = await request(app).post(`/v1/classes`).expect(400).send({
+    const response = await request(app).post(`/v1/classes`).expect(500).send({
       name,
       avatar,
       whatsapp,
@@ -154,7 +154,11 @@ describe('ClassesController', () => {
     expect(classesCount['count(*)']).toBe(0);
     expect(classScheduleCount['count(*)']).toBe(0);
     expect(response.body).toStrictEqual({
-      message: 'Unexpected error while creating new classes',
+      statusCode: 500,
+      error: 'Internal Server Error',
+      message: 'An internal server error occurred',
+      code: 150,
+      docs: process.env.DOCS_URL,
     });
   });
 });
