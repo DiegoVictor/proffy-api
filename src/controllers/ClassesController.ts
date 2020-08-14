@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import paginationLinks from '../helpers/paginationLinks';
 import db from '../database/connection';
-import convertHourToMinutes from '../utils/convertStringHourToMinutes';
+import convertStringHourToMinutes from '../utils/convertStringHourToMinutes';
 
 interface ScheduleItem {
   week_day: number;
@@ -13,6 +13,8 @@ interface ScheduleItem {
 export default class ClassesController {
   async index(request: Request, response: Response): Promise<Response> {
     const { week_day, subject, time } = request.query;
+
+    const timeInMinutes = convertStringHourToMinutes(String(time));
 
     const query = () =>
       db('classes')
@@ -72,8 +74,8 @@ export default class ClassesController {
       const classSchedule = schedule.map((scheduleItem: ScheduleItem) => ({
         class_id,
         week_day: scheduleItem.week_day,
-        from: convertHourToMinutes(scheduleItem.from),
-        to: convertHourToMinutes(scheduleItem.to),
+        from: convertStringHourToMinutes(scheduleItem.from),
+        to: convertStringHourToMinutes(scheduleItem.to),
       }));
 
       await trx('class_schedule').insert(classSchedule);
