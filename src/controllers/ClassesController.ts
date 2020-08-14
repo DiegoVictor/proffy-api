@@ -13,20 +13,26 @@ export default class ClassesController {
   async index(request: Request, response: Response): Promise<Response> {
     const { week_day, subject, time } = request.query;
 
-    const timeInMinutes = convertHourToMinutes(String(time));
-    const classes = await db('classes')
-      .whereExists(function () {
-        this.select('class_schedule.*')
-          .from('class_schedule')
-          .whereRaw('`class_schedule`.`class_id` = `classes`.`id`')
-          .whereRaw('`class_schedule`.`week_day` = ??', [Number(week_day)])
-          .whereRaw('`class_schedule`.`from` <= ??', [timeInMinutes])
-          .whereRaw('`class_schedule`.`to` > ??', [timeInMinutes]);
-      })
-      .where('classes.subject', '=', String(subject))
-      .join('users', 'classes.user_id', '=', 'users.id')
+    const query = () =>
+      db('classes')
+        .whereExists(function () {
+          this.select('class_schedule.*')
+            .from('class_schedule')
+            .whereRaw('`class_schedule`.`class_id` = `classes`.`id`')
+            .whereRaw('`class_schedule`.`week_day` = ??', [Number(week_day)])
+            .whereRaw('`class_schedule`.`from` <= ??', [timeInMinutes])
+            .whereRaw('`class_schedule`.`to` > ??', [timeInMinutes]);
+        })
+        .where('classes.subject', '=', String(subject))
+        .join('users', 'classes.user_id', '=', 'users.id');
+
+    const classes = await query()
+      .limit(limit)
+      .offset((page - 1) * limit)
       .select(['classes.*', 'users.*']);
 
+    const [count] = await query().count();
+    response.header('X-Total-Count', count['count(*)']);
     return response.json(classes);
   }
 
