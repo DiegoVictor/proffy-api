@@ -4,7 +4,9 @@ import { badImplementation } from '@hapi/boom';
 import paginationLinks from '../helpers/paginationLinks';
 import db from '../database/connection';
 import convertStringHourToMinutes from '../utils/convertStringHourToMinutes';
+import ClassesRepository from '../repositories/ClassesRepository';
 
+const classesRepository = new ClassesRepository();
 
 export default class ClassesController {
   async index(request: Request, response: Response): Promise<Response> {
