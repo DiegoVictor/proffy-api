@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import paginationLinks from '../helpers/paginationLinks';
 import convertStringHourToMinutes from '../utils/convertStringHourToMinutes';
+import CreateClassAndProffy from '../services/CreateClassAndProffy';
 import ClassesRepository from '../repositories/ClassesRepository';
 
 const classesRepository = new ClassesRepository();
