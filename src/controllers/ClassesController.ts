@@ -5,11 +5,6 @@ import paginationLinks from '../helpers/paginationLinks';
 import db from '../database/connection';
 import convertStringHourToMinutes from '../utils/convertStringHourToMinutes';
 
-interface ScheduleItem {
-  week_day: number;
-  from: string;
-  to: string;
-}
 
 export default class ClassesController {
   async index(request: Request, response: Response): Promise<Response> {
@@ -51,47 +46,9 @@ export default class ClassesController {
   }
 
   async store(request: Request, response: Response): Promise<Response> {
-    const {
-      name,
-      avatar,
-      whatsapp,
-      bio,
-      subject,
-      cost,
-      schedule,
-    } = request.body;
+    const createClassAndProffy = new CreateClassAndProffy();
+    await createClassAndProffy.execute(request.body);
 
-    const trx = await db.transaction();
-
-    try {
-      const [user_id] = await trx('users').insert({
-        name,
-        avatar,
-        whatsapp,
-        bio,
-      });
-      const [class_id] = await trx('classes').insert({
-        subject,
-        cost,
-        user_id,
-      });
-      const classSchedule = schedule.map((scheduleItem: ScheduleItem) => ({
-        class_id,
-        week_day: scheduleItem.week_day,
-        from: convertStringHourToMinutes(scheduleItem.from),
-        to: convertStringHourToMinutes(scheduleItem.to),
-      }));
-
-      await trx('class_schedule').insert(classSchedule);
-      await trx.commit();
-
-      return response.sendStatus(201);
-    } catch (err) {
-      await trx.rollback();
-
-      throw badImplementation('Unexpected error while creating new classes', {
-        code: 150,
-      });
-    }
+    return response.sendStatus(201);
   }
 }
