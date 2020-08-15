@@ -4,6 +4,7 @@ import faker from 'faker';
 import connection from '../../src/database/connection';
 import factory from '../utils/factory';
 import app from '../../src/app';
+import ClassesRepository from '../../src/repositories/ClassesRepository';
 
 interface User {
   id: number;
@@ -41,19 +42,20 @@ describe('ClassesController', () => {
   it('should be able to get a list of classes', async () => {
     const week_day = 0;
     const subject = 'Matemátia';
+    const length = 15;
 
     const user = await factory.attrs<User>('User');
     const classes = await factory.attrsMany<ClassItem>(
       'Class',
-      3,
-      [{}, {}, {}].fill({
+      length,
+      new Array(length).fill({
         user_id: user.id,
         subject,
       }),
     );
     const schedules = await factory.attrsMany<ClassSchedule>(
       'ClassSchedule',
-      3,
+      length,
       classes.map((classItem: ClassItem) => ({
         class_id: classItem.id,
         week_day,
@@ -70,7 +72,14 @@ describe('ClassesController', () => {
       `/v1/classes?week_day=${week_day}&subject=${subject}&time=9:00`,
     );
 
-    classes.forEach(classItem => {
+    const classesRepository = new ClassesRepository();
+
+    const savedClasses: ClassItem[] = await classesRepository
+      .getQueryBySubjectInWeekDayAtTime(subject, week_day, 9 * 60)
+      .limit(10)
+      .select(['users.*', 'classes.*']);
+
+    savedClasses.forEach(classItem => {
       expect(response.body).toContainEqual({ ...classItem, ...user });
     });
   });
