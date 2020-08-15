@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
 
-import { badImplementation } from '@hapi/boom';
 import paginationLinks from '../helpers/paginationLinks';
-import db from '../database/connection';
 import convertStringHourToMinutes from '../utils/convertStringHourToMinutes';
 import ClassesRepository from '../repositories/ClassesRepository';
 
