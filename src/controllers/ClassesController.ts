@@ -7,7 +7,7 @@ import ClassesRepository from '../repositories/ClassesRepository';
 
 const classesRepository = new ClassesRepository();
 
-export default class ClassesController {
+class ClassesController {
   async index(request: Request, response: Response): Promise<Response> {
     const { current_url } = request;
     const page = Number(request.query.page) || 1;
@@ -50,3 +50,4 @@ export default class ClassesController {
     return response.sendStatus(201);
   }
 }
+export default ClassesController;
