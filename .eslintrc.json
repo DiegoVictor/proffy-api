@@ -22,6 +22,7 @@
     "camelcase": "off",
     "class-methods-use-this": "off",
     "func-names": "off",
+    "no-param-reassign": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
