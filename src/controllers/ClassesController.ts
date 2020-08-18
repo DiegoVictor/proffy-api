@@ -17,21 +17,13 @@ class ClassesController {
     const timeInMinutes = convertStringHourToMinutes(String(time));
 
     const classes = await classesRepository
-      .getQueryBySubjectInWeekDayAtTime(
-        String(subject),
-        Number(week_day),
-        timeInMinutes,
-      )
+      .queryBySubjectInWeekDayAtTime(subject, week_day, timeInMinutes)
       .limit(limit)
       .offset((page - 1) * limit)
       .select(['classes.*', 'users.*']);
 
     const [count] = await classesRepository
-      .getQueryBySubjectInWeekDayAtTime(
-        String(subject),
-        Number(week_day),
-        timeInMinutes,
-      )
+      .queryBySubjectInWeekDayAtTime(subject, week_day, timeInMinutes)
       .count();
     response.header('X-Total-Count', count['count(*)']);
 
