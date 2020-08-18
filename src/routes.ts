@@ -8,6 +8,7 @@ import userIdValidator from './validator/userIdValidator';
 import classFiltersValidator from './validator/classFiltersValidator';
 import classValidator from './validator/classValidator';
 import sessionValidator from './validator/sessionValidator';
+import Auth from './middlewares/Auth';
 
 const classesController = new ClassesController();
 const connectionsController = new ConnectionsController();
@@ -21,6 +22,8 @@ routes.get('/connections', connectionsController.index);
 routes.post('/connections', userIdValidator, connectionsController.store);
 
 routes.post('/users', userValidator, usersController.store);
+routes.use(Auth);
+
 routes.get('/classes', classFiltersValidator, classesController.index);
 routes.post('/classes', classValidator, classesController.store);
 
