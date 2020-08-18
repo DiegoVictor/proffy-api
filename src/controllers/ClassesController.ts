@@ -43,6 +43,19 @@ class ClassesController {
     return response.json(classes);
   }
 
+  async show(request: Request, response: Response): Promise<Response> {
+    const { host_url, current_url } = request;
+    const { id } = request.params;
+
+    const getClassService = new GetClassService();
+    const classItem: SerializedClass = await getClassService.execute({ id });
+
+    return response.json({
+      ...classItem,
+      url: current_url,
+      user_url: `${host_url}/v1/users/${classItem.user_id}`,
+    });
+  }
   async store(request: Request, response: Response): Promise<Response> {
     const createClassAndProffy = new CreateClassAndProffy();
     await createClassAndProffy.execute(request.body);

@@ -9,6 +9,7 @@ import classFiltersValidator from './validator/classFiltersValidator';
 import classValidator from './validator/classValidator';
 import sessionValidator from './validator/sessionValidator';
 import Auth from './middlewares/Auth';
+import idValidator from './validator/idValidator';
 
 const classesController = new ClassesController();
 const connectionsController = new ConnectionsController();
@@ -25,6 +26,7 @@ routes.post('/users', userValidator, usersController.store);
 routes.use(Auth);
 
 routes.get('/classes', classFiltersValidator, classesController.index);
+routes.get('/classes/:id', idValidator, classesController.show);
 routes.post('/classes', classValidator, classesController.store);
 
 export default routes;
