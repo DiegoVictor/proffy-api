@@ -7,6 +7,7 @@ import SessionsController from './controllers/SessionsController';
 import userIdValidator from './validator/userIdValidator';
 import classFiltersValidator from './validator/classFiltersValidator';
 import classValidator from './validator/classValidator';
+import userValidator from './validator/userValidator';
 import sessionValidator from './validator/sessionValidator';
 import Auth from './middlewares/Auth';
 import idValidator from './validator/idValidator';
