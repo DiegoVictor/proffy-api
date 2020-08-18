@@ -48,11 +48,22 @@ class ClassesController {
       user_url: `${host_url}/v1/users/${classItem.user_id}`,
     });
   }
-  async store(request: Request, response: Response): Promise<Response> {
-    const createClassAndProffy = new CreateClassAndProffy();
-    await createClassAndProffy.execute(request.body);
 
-    return response.sendStatus(201);
+  async store(request: Request, response: Response): Promise<Response> {
+    const { bio, whatsapp, cost, subject, schedules } = request.body;
+    const { id: user_id } = request.user;
+
+    const createOrUpdateClassService = new CreateOrUpdateClassService();
+    await createOrUpdateClassService.execute({
+      user_id,
+      bio,
+      whatsapp,
+      cost,
+      subject,
+      schedules,
+    });
+
+    return response.sendStatus(204);
   }
 }
 export default ClassesController;
