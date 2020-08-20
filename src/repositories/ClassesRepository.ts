@@ -7,9 +7,12 @@ class ClassesRepository {
     week_day: number | null,
     time: number | null,
   ): Knex.QueryBuilder {
-    const query = db('classes')
-      .join('users', 'classes.user_id', '=', 'users.id')
-      .join('class_schedule', 'classes.id', '=', 'class_schedule.class_id');
+    const query = db('classes').join(
+      'users',
+      'classes.user_id',
+      '=',
+      'users.id',
+    );
 
     if (subject) {
       query.where('classes.subject', '=', subject);
@@ -35,6 +38,19 @@ class ClassesRepository {
     }
 
     return query;
+  }
+
+  async countBySubjectInWeekDayAtTime(
+    subject: string | null,
+    week_day: number | null,
+    time: number | null,
+  ): Promise<string> {
+    const [count] = await this.queryBySubjectInWeekDayAtTime(
+      subject,
+      week_day,
+      time,
+    ).count();
+    return count['count(*)'];
   }
 }
 
