@@ -3,7 +3,23 @@ import { Request, Response } from 'express';
 import { hash } from 'bcryptjs';
 
 import db from '../database/connection';
+import GetUserService from '../services/GetUserService';
+
 class UserController {
+  async show(request: Request, response: Response): Promise<Response> {
+    const { host_url, current_url } = request;
+    const { id } = request.params;
+
+    const getUserService = new GetUserService();
+    const user = await getUserService.execute({ id });
+
+    return response.json({
+      ...user,
+      url: current_url,
+      class_url: `${host_url}/v1/classes/${user.class_id}`,
+    });
+  }
+
   async store(request: Request, response: Response): Promise<Response> {
     const {
       email,
