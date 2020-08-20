@@ -1,12 +1,18 @@
 import factory from 'factory-girl';
 import faker from 'faker';
+import { hash } from 'bcryptjs';
 
 factory.define(
   'User',
   {},
   {
-    id: faker.random.number,
+    email: faker.internet.email,
+    password: async () => {
+      const hashedPassword = await hash(faker.internet.password(), 8);
+      return hashedPassword;
+    },
     name: faker.name.findName,
+    surname: faker.name.lastName,
     avatar: faker.image.imageUrl,
     whatsapp: faker.phone.phoneNumber,
     bio: faker.lorem.paragraph,
@@ -17,7 +23,6 @@ factory.define(
   'Class',
   {},
   {
-    id: faker.random.number,
     subject: faker.name.title,
     cost: () => Number(faker.finance.amount()),
     user_id: faker.random.number,
@@ -29,11 +34,9 @@ factory.define('ClassSchedule', {}, () => {
   const to = faker.random.number({ min: from + 1, max: 24 });
 
   return {
-    id: faker.random.number,
     week_day: () => faker.random.number({ min: 0, max: 6 }),
     from: from * 60,
     to: to * 60,
-    class_id: faker.random.number,
   };
 });
 
