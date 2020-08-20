@@ -7,6 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     env:
       APP_PORT: '3333'
+      APP_WEB_URL: http://localhost:3000
+      JWT_SECRET: '4cca6f94fb65d4113055742887079226'
+      JWT_EXPIRATION_TIME: '7d'
+      MAIL_HOST: 'smtp.test.io'
+      MAIL_PORT: 587
+      MAIL_USER: 'test'
+      MAIL_PASSWORD: 'password'
       DOCS_URL: 'https://github.com/DiegoVictor/proffy-api#errors-reference'
     steps:
       - uses: actions/setup-node@v1
