@@ -50,7 +50,7 @@ class ClassesController {
     const { id } = request.params;
 
     const getClassService = new GetClassService();
-    const classItem: SerializedClass = await getClassService.execute({ id });
+    const classItem = await getClassService.execute({ id });
 
     return response.json({
       ...classItem,
