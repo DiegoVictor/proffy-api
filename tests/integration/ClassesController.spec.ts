@@ -142,22 +142,92 @@ describe('ClassesController', () => {
     });
   });
 
-    await connection('classes').insert(classes);
-    await connection('class_schedule').insert(schedules);
+  it('should be able to get all classes', async () => {
+    const week_day = 0;
+    const subject = 'Matemátia';
+    const classesCount = 5;
 
-    const response = await request(app).get(
-      `/v1/classes?week_day=${week_day}&subject=${subject}&time=9:00`,
+    const user = await factory.attrs<User>('User');
+    const [user_id] = await connection('users').insert(user);
+    const authorization = `Bearer ${token(user_id)}`;
+
+    const classes = await factory.attrsMany<Class>(
+      'Class',
+      classesCount,
+      Array.from(Array(classesCount).keys()).map(() => ({
+        user_id,
+        subject,
+      })),
     );
 
-    const classesRepository = new ClassesRepository();
+    await connection('classes').insert(classes);
 
-    const savedClasses: ClassItem[] = await classesRepository
-      .getQueryBySubjectInWeekDayAtTime(subject, week_day, 9 * 60)
+    const schedules = await factory.attrsMany<ClassSchedule>(
+      'ClassSchedule',
+      classesCount,
+      Array.from(Array(classesCount).keys()).map(() => ({
+        from: 480,
+        to: 920,
+        week_day,
+      })),
+    );
+
+    await connection('class_schedule').insert(
+      schedules.map((schedule, index) => ({
+        ...schedule,
+        class_id: index + 1,
+      })),
+    );
+
+    const response = await request(app)
+      .get(`/v1/classes?week_day=${week_day}&subject=${subject}`)
+      .set('Authorization', authorization);
+
+    const savedClasses = await connection('classes')
+      .join('users', 'classes.user_id', '=', 'users.id')
+      .where('classes.subject', '=', subject)
+      .whereExists(function () {
+        this.select('class_schedule.*')
+          .from('class_schedule')
+          .whereRaw('`class_schedule`.`class_id` = `classes`.`id`')
+          .whereRaw('`class_schedule`.`week_day` = ??', [week_day]);
+      })
       .limit(10)
-      .select(['users.*', 'classes.*']);
+      .select(
+        'classes.id',
+        'classes.subject',
+        'classes.cost',
+        'users.id as user_id',
+        'users.name',
+        'users.email',
+        'users.surname',
+        'users.avatar',
+        'users.whatsapp',
+        'users.bio',
+      );
 
-    savedClasses.forEach(classItem => {
-      expect(response.body).toContainEqual({ ...classItem, ...user });
+    const savedSchedules = await connection('class_schedule')
+      .whereIn(
+        'class_id',
+        savedClasses.map(classItem => classItem.id),
+      )
+      .select('week_day', 'from', 'to', 'class_id');
+
+    const classesSerialized = savedClasses.map(classItem => {
+      return {
+        ...classItem,
+        schedules: savedSchedules.filter(
+          schedule => schedule.class_id === classItem.id,
+        ),
+      };
+    });
+
+    classesSerialized.forEach(classItem => {
+      expect(response.body).toContainEqual({
+        ...classItem,
+        url: `${url}/classes/${classItem.id}`,
+        user_url: `${url}/users/${user_id}`,
+      });
     });
   });
 
