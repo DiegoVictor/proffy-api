@@ -21,6 +21,7 @@ class ClassesController {
     request: Request & CustomRequest,
     response: Response,
   ): Promise<Response> {
+    const { host_url, current_url } = request;
     const page = Number(request.query.page) || 1;
     const limit = 10;
 
@@ -31,19 +32,41 @@ class ClassesController {
       .queryBySubjectInWeekDayAtTime(subject, week_day, timeInMinutes)
       .limit(limit)
       .offset((page - 1) * limit)
-      .select(['classes.*', 'users.*']);
+      .select(
+        'classes.id',
+        'classes.subject',
+        'classes.cost',
+        'users.id as user_id',
+        'users.name',
+        'users.email',
+        'users.surname',
+        'users.avatar',
+        'users.whatsapp',
+        'users.bio',
+      );
+    const classesSerialized = await classesRepository.getClassesSchedules(
+      classes,
+    );
 
-    const [count] = await classesRepository
-      .queryBySubjectInWeekDayAtTime(subject, week_day, timeInMinutes)
-      .count();
-    response.header('X-Total-Count', count['count(*)']);
+    const count = await classesRepository.countBySubjectInWeekDayAtTime(
+      subject,
+      week_day,
+      timeInMinutes,
+    );
+    response.header('X-Total-Count', count);
 
     const pages_total = Math.ceil(parseInt(count, 10) / limit);
     if (pages_total > 1) {
       response.links(paginationLinks(page, pages_total, current_url));
     }
 
-    return response.json(classes);
+    return response.json(
+      classesSerialized.map(classItem => ({
+        ...classItem,
+        url: `${current_url}/${classItem.id}`,
+        user_url: `${host_url}/v1/users/${classItem.user_id}`,
+      })),
+    );
   }
 
   async show(request: Request, response: Response): Promise<Response> {
