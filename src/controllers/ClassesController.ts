@@ -37,7 +37,7 @@ class ClassesController {
       .count();
     response.header('X-Total-Count', count['count(*)']);
 
-    const pages_total = Math.ceil(count['count(*)'] / limit);
+    const pages_total = Math.ceil(parseInt(count, 10) / limit);
     if (pages_total > 1) {
       response.links(paginationLinks(page, pages_total, current_url));
     }
