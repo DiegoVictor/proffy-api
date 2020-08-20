@@ -5,16 +5,26 @@ import convertStringHourToMinutes from '../utils/convertStringHourToMinutes';
 import CreateClassAndProffy from '../services/CreateClassAndProffy';
 import ClassesRepository from '../repositories/ClassesRepository';
 
+interface CustomRequest {
+  query: {
+    subject: string;
+    week_day: number;
+    time: string;
+  };
+}
+
 const classesRepository = new ClassesRepository();
 
 class ClassesController {
-  async index(request: Request, response: Response): Promise<Response> {
-    const { current_url } = request;
+  async index(
+    request: Request & CustomRequest,
+    response: Response,
+  ): Promise<Response> {
     const page = Number(request.query.page) || 1;
     const limit = 10;
 
     const { week_day, subject, time } = request.query;
-    const timeInMinutes = convertStringHourToMinutes(String(time));
+    const timeInMinutes = time ? convertStringHourToMinutes(time) : null;
 
     const classes = await classesRepository
       .queryBySubjectInWeekDayAtTime(subject, week_day, timeInMinutes)
