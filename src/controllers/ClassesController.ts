@@ -2,8 +2,9 @@ import { Request, Response } from 'express';
 
 import paginationLinks from '../helpers/paginationLinks';
 import convertStringHourToMinutes from '../utils/convertStringHourToMinutes';
-import CreateClassAndProffy from '../services/CreateClassAndProffy';
+import CreateOrUpdateClassService from '../services/CreateOrUpdateClassService';
 import ClassesRepository from '../repositories/ClassesRepository';
+import GetClassService from '../services/GetClassService';
 
 interface CustomRequest {
   query: {
