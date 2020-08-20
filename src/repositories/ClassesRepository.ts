@@ -1,6 +1,40 @@
 import Knex from 'knex';
 import db from '../database/connection';
 
+interface Class {
+  id: number;
+  user_id: number;
+  whatsapp: string;
+  name: string;
+  surname: string;
+  bio: string;
+  avatar: string;
+  subject: string;
+  cost: number;
+  week_day: number;
+  from: string;
+  to: string;
+}
+
+interface SerializedClass {
+  id: number;
+  url?: string;
+  user_url?: string;
+  user_id?: number;
+  whatsapp: string;
+  name: string;
+  surname: string;
+  bio: string;
+  avatar: string;
+  subject: string;
+  cost: number;
+  schedules: {
+    week_day: number;
+    from: string;
+    to: string;
+  }[];
+}
+
 class ClassesRepository {
   queryBySubjectInWeekDayAtTime(
     subject: string | null,
@@ -51,6 +85,26 @@ class ClassesRepository {
       time,
     ).count();
     return count['count(*)'];
+  }
+
+  async getClassesSchedules(classes: Class[]): Promise<SerializedClass[]> {
+    const schedules = await db('class_schedule')
+      .whereIn(
+        'class_id',
+        classes.map(classItem => classItem.id),
+      )
+      .select('week_day', 'from', 'to', 'class_id');
+
+    const classesSerialized = classes.map(classItem => {
+      return {
+        ...classItem,
+        schedules: schedules.filter(
+          schedule => schedule.class_id === classItem.id,
+        ),
+      };
+    });
+
+    return classesSerialized;
   }
 }
 
