@@ -43,6 +43,8 @@ routes.post(
 
 routes.use(Auth);
 
+routes.get('/users/:id', idValidator, usersController.show);
+
 routes.get('/classes', classFiltersValidator, classesController.index);
 routes.get('/classes/:id', idValidator, classesController.show);
 routes.post('/classes', classValidator, classesController.store);
