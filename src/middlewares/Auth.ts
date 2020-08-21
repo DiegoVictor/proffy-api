@@ -31,6 +31,6 @@ export default async (
 
     next();
   } catch (err) {
-    throw unauthorized('Token invalid', 'sample', { code: 541 });
+    throw unauthorized('Token invalid or expired', 'sample', { code: 541 });
   }
 };
