@@ -30,9 +30,6 @@ const routes = express.Router();
 
 routes.post('/sessions', sessionValidator, sessionsController.store);
 
-routes.get('/connections', connectionsController.index);
-routes.post('/connections', userIdValidator, connectionsController.store);
-
 routes.post('/users', userValidator, usersController.store);
 routes.post(
   '/users/forgot_password',
@@ -46,6 +43,9 @@ routes.post(
 );
 
 routes.use(Auth);
+
+routes.get('/connections', connectionsController.index);
+routes.post('/connections', userIdValidator, connectionsController.store);
 
 routes.get('/users/:id', idValidator, usersController.show);
 
