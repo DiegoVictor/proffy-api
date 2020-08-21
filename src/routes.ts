@@ -14,6 +14,8 @@ import userValidator from './validator/userValidator';
 import resetPasswordValidator from './validator/resetPasswordValidator';
 import sessionValidator from './validator/sessionValidator';
 import Auth from './middlewares/Auth';
+import FavoritesController from './controllers/FavoritesController';
+import favoritedValidator from './validator/favoritedValidator';
 import idValidator from './validator/idValidator';
 
 const classesController = new ClassesController();
@@ -22,6 +24,7 @@ const forgotPasswordController = new ForgotPasswordController();
 const resetPasswordController = new ResetPasswordController();
 const sessionsController = new SessionsController();
 const usersController = new UsersController();
+const favoritesController = new FavoritesController();
 const routes = express.Router();
 
 routes.post('/sessions', sessionValidator, sessionsController.store);
@@ -49,4 +52,5 @@ routes.get('/classes', classFiltersValidator, classesController.index);
 routes.get('/classes/:id', idValidator, classesController.show);
 routes.post('/classes', classValidator, classesController.store);
 
+routes.post('/favorites', favoritedValidator, favoritesController.store);
 export default routes;
