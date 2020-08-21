@@ -17,6 +17,7 @@ import Auth from './middlewares/Auth';
 import FavoritesController from './controllers/FavoritesController';
 import favoritedValidator from './validator/favoritedValidator';
 import idValidator from './validator/idValidator';
+import pageValidator from './validator/pageValidator';
 
 const classesController = new ClassesController();
 const connectionsController = new ConnectionsController();
@@ -52,5 +53,7 @@ routes.get('/classes', classFiltersValidator, classesController.index);
 routes.get('/classes/:id', idValidator, classesController.show);
 routes.post('/classes', classValidator, classesController.store);
 
+routes.get('/favorites', pageValidator, favoritesController.index);
 routes.post('/favorites', favoritedValidator, favoritesController.store);
+
 export default routes;
