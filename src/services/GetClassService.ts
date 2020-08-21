@@ -40,9 +40,11 @@ class GetClassService {
   public async execute({ id }: Request): Promise<SerializedClass> {
     const classItem = await db('classes')
       .join('users', 'classes.user_id', '=', 'users.id')
-      .join('class_schedule', 'classes.id', '=', 'class_schedule.class_id')
       .where('classes.id', id)
       .select(
+        'classes.id as id',
+        'classes.subject',
+        'classes.cost',
         'users.id as user_id',
         'users.email',
         'users.name',
@@ -50,38 +52,21 @@ class GetClassService {
         'users.avatar',
         'users.whatsapp',
         'users.bio',
-        'classes.id as id',
-        'classes.subject',
-        'classes.cost',
-        'class_schedule.week_day',
-        'class_schedule.from',
-        'class_schedule.to',
       )
-      .then((rows: Class[]) => {
-        let result: SerializedClass | undefined;
-
-        rows.forEach(row => {
-          const { week_day: weekDay, from, to, ...props } = row;
-          const schedule = { week_day: weekDay, from, to };
-
-          if (result) {
-            result.schedules.push(schedule);
-          } else {
-            result = {
-              ...props,
-              schedules: [schedule],
-            };
-          }
-        });
-
-        return result;
-      });
+      .first();
 
     if (!classItem) {
       throw notFound('Class not found', { code: 144 });
     }
 
-    return classItem;
+    const schedules = await db('class_schedule')
+      .where('class_id', id)
+      .select('week_day', 'from', 'to', 'class_id');
+
+    return {
+      ...classItem,
+      schedules,
+    };
   }
 }
 
