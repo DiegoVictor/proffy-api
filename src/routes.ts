@@ -49,7 +49,12 @@ routes.post('/connections', userIdValidator, connectionsController.store);
 
 routes.get('/users/:id', idValidator, usersController.show);
 
-routes.get('/classes', classFiltersValidator, classesController.index);
+routes.get(
+  '/classes',
+  classFiltersValidator,
+  pageValidator,
+  classesController.index,
+);
 routes.get('/classes/:id', idValidator, classesController.show);
 routes.post('/classes', classValidator, classesController.store);
 
