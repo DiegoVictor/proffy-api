@@ -1,6 +1,6 @@
 import path from 'path';
 
-module.exports = {
+const config = {
   client: 'sqlite3',
   connection: {
     filename: path.resolve(
@@ -15,3 +15,6 @@ module.exports = {
   },
   useNullAsDefault: true,
 };
+
+module.exports = config;
+export default config;
