@@ -234,35 +234,31 @@ describe('ClassesController', () => {
   it('should be able to create new class', async () => {
     const subject = 'Matemática';
     const cost = faker.random.number();
-    const schedule = [
+    const schedules = [
       {
         week_day: 0,
         from: '6:00',
         to: '12:00',
       },
     ];
-    const { name, avatar, whatsapp, bio } = await factory.attrs<User>('User');
-    await request(app).post(`/v1/classes`).expect(201).send({
-      name,
-      avatar,
-      whatsapp,
-      bio,
-      subject,
-      cost,
-      schedule,
-    });
+    const user = await factory.attrs<User>('User');
+    const [user_id] = await connection('users').insert(user);
+    const authorization = `Bearer ${token(user_id)}`;
 
-    const user = await connection('users').first();
-    expect(user).toMatchObject({
-      id: expect.any(Number),
-      name,
-      avatar,
-      whatsapp,
-      bio,
-    });
+    await request(app)
+      .post(`/v1/classes`)
+      .set('Authorization', authorization)
+      .send({
+        user_id,
+        subject,
+        bio: user.bio,
+        whatsapp: user.whatsapp,
+        cost,
+        schedules,
+      });
 
     const classItem = await connection('classes')
-      .where('user_id', user.id)
+      .where('user_id', user_id)
       .first();
     expect(classItem).toMatchObject({
       id: expect.any(Number),
@@ -281,32 +277,71 @@ describe('ClassesController', () => {
     });
   });
 
+  it('should be able to retrieve a class', async () => {
+    const user = await factory.attrs<User>('User');
+    const [user_id] = await connection('users').insert(user);
+
+    const classItem = await factory.attrs<Class>('Class', {
+      user_id,
+    });
+    const [class_id] = await connection('classes').insert(classItem);
+
+    const schedules = await factory.attrs<ClassSchedule>('ClassSchedule', {
+      class_id,
+    });
+    await connection('class_schedule').insert(schedules);
+
+    const authorization = `Bearer ${token(user_id)}`;
+
+    const response = await request(app)
+      .get(`/v1/classes/${class_id}`)
+      .set('Authorization', authorization)
+      .send();
+
+    delete user.password;
+    delete classItem.user_id;
+    expect(response.body).toEqual({
+      ...user,
+      ...classItem,
+      id: expect.any(Number),
+      user_id,
+      schedules: [schedules],
+      url: `${url}/classes/${class_id}`,
+      user_url: `${url}/users/${user_id}`,
+    });
+  });
+
   it('should not be able to create new class', async () => {
     const subject = 'Matemática';
     const cost = faker.random.number();
-    const schedule = [
+    const schedules = [
       {
         week_day: 0,
         from: 'invalid-hour',
         to: 'invalid-hour',
       },
     ];
-    const { name, avatar, whatsapp, bio } = await factory.attrs<User>('User');
-    const response = await request(app).post(`/v1/classes`).expect(500).send({
-      name,
-      avatar,
-      whatsapp,
-      bio,
-      subject,
-      cost,
-      schedule,
-    });
+    const user = await factory.attrs<User>('User');
+    const [user_id] = await connection('users').insert(user);
 
-    const [usersCount] = await connection('users').count();
+    const authorization = `Bearer ${token(user_id)}`;
+
+    const response = await request(app)
+      .post(`/v1/classes`)
+      .set('Authorization', authorization)
+      .expect(500)
+      .send({
+        user_id,
+        subject,
+        cost,
+        schedules,
+        bio: user.bio,
+        whatsapp: user.whatsapp,
+      });
+
     const [classesCount] = await connection('classes').count();
     const [classScheduleCount] = await connection('class_schedule').count();
 
-    expect(usersCount['count(*)']).toBe(0);
     expect(classesCount['count(*)']).toBe(0);
     expect(classScheduleCount['count(*)']).toBe(0);
     expect(response.body).toStrictEqual({
