@@ -4,8 +4,28 @@ import faker from 'faker';
 import connection from '../../src/database/connection';
 import factory from '../utils/factory';
 import app from '../../src/app';
+import token from '../utils/jwtoken';
+
+interface User {
+  id: number;
+  email: string;
+  name: string;
+  password: string;
+  avatar: string;
+  whatsapp: string;
+  bio: string;
+}
 
 describe('ConnectionsController', () => {
+  let user: User;
+  let authorization: string;
+
+  beforeAll(async () => {
+    user = await factory.attrs<User>('User');
+    const [user_id] = await connection('users').insert(user);
+    authorization = `Bearer ${token(user_id)}`;
+  });
+
   beforeEach(async () => {
     await connection.migrate.rollback();
     await connection.migrate.latest();
@@ -21,7 +41,9 @@ describe('ConnectionsController', () => {
 
     await connection('connections').insert(connections);
 
-    const response = await request(app).get('/v1/connections');
+    const response = await request(app)
+      .get('/v1/connections')
+      .set('Authorization', authorization);
 
     expect(response.body).toStrictEqual({ total });
   });
@@ -30,6 +52,7 @@ describe('ConnectionsController', () => {
     await request(app)
       .post('/v1/connections')
       .expect(201)
+      .set('Authorization', authorization)
       .send({ user_id: faker.random.number() });
 
     const [connectionsCount] = await connection('connections').count();
