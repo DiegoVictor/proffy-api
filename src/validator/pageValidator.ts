@@ -1,7 +1,7 @@
 import { celebrate, Segments, Joi } from 'celebrate';
 
 export default celebrate({
-  [Segments.QUERY]: {
+  [Segments.QUERY]: Joi.object({
     page: Joi.number(),
-  },
+  }).unknown(),
 });
