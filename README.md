@@ -18,11 +18,12 @@ Responsible for provide data to the [`web`](https://github.com/DiegoVictor/proff
       * [Migrations](#migrations)
     * [.env](#env)
 * [Usage](#usage)
-* [Error Handling](#error-handling)
+  * [Error Handling](#error-handling)
     * [Errors Reference](#errors-reference)
   * [Pagination](#pagination)
     * [Link Header](#link-header)
     * [X-Total-Count](#x-total-count)
+  * [Bearer Token](#bearer-token)
   * [Versioning](#versioning)
   * [Routes](#routes)
     * [Requests](#requests)
@@ -85,7 +86,7 @@ Instead of only throw a simple message and HTTP Status Code this API return frie
   "statusCode": 429,
   "error": "Too Many Requests",
   "message": "Too Many Requests",
-  "code": 449,
+  "code": 549,
   "docs": "https://github.com/DiegoVictor/proffy-api#errors-reference"
 }
 ```
@@ -96,7 +97,22 @@ Instead of only throw a simple message and HTTP Status Code this API return frie
 ### Errors Reference
 |code|message|description
 |---|---|---
-|150|Unexpected error while creating new classes|An error ocorred during the creation of the user, class or schedules.
+|141|User not found|Could not found the user of the class.
+|144|Class not found|The `id` sent does not references an existing class in the database.
+|150|Unexpected error while update new classes|An error ocurred during the updating/creation of the user, classes and schedules.
+|240|Email already in use|The provided email is already used by another user.
+|244|User not found|The `id` sent does not references an existing user in the database.
+|340|User and/or password not match|User and/or password is incorrect.
+|344|User not exists|The email sent not references an existing user in the database.
+|440|You can not favorite yourself|You provide your own `id` as `favorited_user_id`.
+|444|Users not match|Couldn't found one or both users, the favorited (proffy) and you (you not exists xD!).
+|540|Token invalid or expired|The reset password JWT token is invalid or expired.
+|541|Token invalid or expired|The login JWT token is invalid or expired.
+|542|Invalid token|The login JWT token not contain a valid user id.
+|543|Token not provided|The login JWT token was not sent.
+|544|User does not exists|The provided email not references a user in the database.
+|549|Too Many Requests|You reached at the requests limit.
+|550|An unexpected error while updating the user occured|Was not possible to reset user password.
 
 
 ## Pagination
@@ -120,6 +136,14 @@ Also in the headers of every route with pagination the `Link` header is returned
 ### X-Total-Count
 Another header returned in routes with pagination, this bring the total records amount.
 
+## Bearer Token
+A few routes expect a Bearer Token in an `Authorization` header.
+> You can see these routes in the [routes](#routes) section.
+```
+GET http://localhost:3333/v1/classes Authorization: Bearer <token>
+```
+> To achieve this token you just need authenticate through the `/sessions` route and it will return the `token` key with a valid Bearer Token.
+
 ## Versioning
 A simple versioning was made. Just remember to set after the `host` the `/v1/` string to your requests.
 ```
@@ -127,12 +151,16 @@ GET http://localhost:3333/v1/classes
 ```
 
 ## Routes
-|route|HTTP Method|params|description
-|:---|:---:|:---:|:---:
-|`/connections`|GET|`week_day`, `from` and `to` query parameters.|Lists connections total.
-|`/connections`|POST|Body with `user_id`.|Increase the number of connections.
-|`/classes`|GET|`page` query parameter.|Lists classes available.
-|`/classes`|POST|Body with class `subject`, `cost`, user `name`, `avatar`, `whatsapp`, `bio` and class schedule `schedule.week_day`, `schedule.from`, `schedule.to`.|Create new class availability.
+|route|HTTP Method|pagination|params|description|auth method
+|:---|:---:|:---:|:---:|:---:|:---:
+|`/connections`|GET|:x:|`week_day`, `from` and `to` query parameters.|Lists connections total.|Bearer
+|`/connections`|POST|:x:|Body with `user_id`.|Increase the number of connections.|Bearer
+|`/classes`|GET|:heavy_check_mark:|`week_day`, `subject`, `time`, `page` query parameters.|Lists classes available.|Bearer
+|`/classes/:id`|GET|:x:|`id` of the class.|Return the class.|Bearer
+|`/classes`|POST|:x:|Body with class `subject`, `cost`, user `user_id`, `whatsapp`, `bio` and class schedule `schedules.week_day`, `schedules.from`, `schedules.to`.|Create new class availability.|Bearer
+|`/users/:id`|GET|:x:|`id` of the user.|Return one user.|Bearer
+|`/favorites`|GET|:heavy_check_mark:|`page` query parameters.|Lists favorited proffys.|Bearer
+|`/favorites`|POST|:x:|Body with `user_id` from user that intending to be favorite.|Set a proffy as favorite.|Bearer
 
 ### Requests
 * `POST /connections`
@@ -140,7 +168,7 @@ GET http://localhost:3333/v1/classes
 Request body:
 ```json
 {
-  "user_id": "76988"
+  "user_id": 76988
 }
 ```
 
@@ -149,8 +177,7 @@ Request body:
 Request body:
 ```json
 {
-  "name": "John Doe",
-  "avatar": "https://avatars2.githubusercontent.com/u/15165349?s=460&u=1013eaaceb8a54984f7f77bc21812ad68f6ef526&v=4",
+  "user_id": 76988,
   "whatsapp": "39379976591",
   "bio": "I have been worked with PHP/Laravel and JavaScript/Node.js for +4 years. Recently I started studying ReactJs and React Native :)",
   "cost": 30,
@@ -167,6 +194,15 @@ Request body:
       "to": "11:00"
     }
   ]
+}
+```
+
+* `POST /favorites`
+
+Request body:
+```json
+{
+  "user_id": 76988
 }
 ```
 
