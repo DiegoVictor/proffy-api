@@ -3,7 +3,7 @@ import faker from 'faker';
 import { hash } from 'bcryptjs';
 
 import app from '../../src/app';
-import connection from '../../src/database/connection';
+import connection from '../../src/database/sql';
 import factory from '../utils/factory';
 
 interface User {

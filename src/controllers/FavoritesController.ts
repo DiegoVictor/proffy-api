@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import db from '../database/connection';
+import db from '../database/sql';
 import FavoriteUserService from '../services/FavoriteUserService';
 import paginationLinks from '../helpers/paginationLinks';
 import FavoritesRepository from '../repositories/FavoritesRepository';

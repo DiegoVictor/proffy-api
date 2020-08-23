@@ -1,5 +1,5 @@
 import Knex from 'knex';
-import db from '../database/connection';
+import db from '../database/sql';
 
 interface Class {
   id: number;

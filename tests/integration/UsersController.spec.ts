@@ -1,7 +1,7 @@
 import request from 'supertest';
 import faker from 'faker';
 
-import connection from '../../src/database/connection';
+import connection from '../../src/database/sql';
 import app from '../../src/app';
 import factory from '../utils/factory';
 import token from '../utils/jwtoken';

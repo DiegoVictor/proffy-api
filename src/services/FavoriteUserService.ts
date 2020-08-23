@@ -1,6 +1,6 @@
 import { badRequest } from '@hapi/boom';
 
-import db from '../database/connection';
+import db from '../database/sql';
 
 interface Request {
   user_id: number;

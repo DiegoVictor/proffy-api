@@ -1,6 +1,6 @@
 import { badRequest, badImplementation } from '@hapi/boom';
 
-import db from '../database/connection';
+import db from '../database/sql';
 import convertStringHourToMinutes from '../utils/convertStringHourToMinutes';
 
 interface Schedule {
