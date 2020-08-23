@@ -18,6 +18,7 @@ import FavoritesController from './controllers/FavoritesController';
 import favoritedValidator from './validators/favoritedValidator';
 import idValidator from './validators/idValidator';
 import pageValidator from './validators/pageValidator';
+import RateLimit from './middlewares/RateLimit';
 
 const classesController = new ClassesController();
 const connectionsController = new ConnectionsController();
@@ -28,7 +29,7 @@ const usersController = new UsersController();
 const favoritesController = new FavoritesController();
 const routes = express.Router();
 
-routes.post('/sessions', sessionValidator, sessionsController.store);
+routes.use(RateLimit);
 
 routes.post('/users', userValidator, usersController.store);
 routes.post(
