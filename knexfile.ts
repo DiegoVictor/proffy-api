@@ -7,6 +7,7 @@ const config = {
       __dirname,
       'src',
       'database',
+      'files',
       `${process.env.NODE_ENV || 'development'}.sqlite`,
     ),
   },
