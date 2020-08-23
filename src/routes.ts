@@ -19,6 +19,8 @@ import favoritedValidator from './validators/favoritedValidator';
 import idValidator from './validators/idValidator';
 import pageValidator from './validators/pageValidator';
 import RateLimit from './middlewares/RateLimit';
+import { BruteForce } from './database/redis';
+import config from './config/security';
 
 const classesController = new ClassesController();
 const connectionsController = new ConnectionsController();
@@ -28,6 +30,14 @@ const sessionsController = new SessionsController();
 const usersController = new UsersController();
 const favoritesController = new FavoritesController();
 const routes = express.Router();
+
+routes.post(
+  '/sessions',
+  BruteForce({ freeRetries: config.freeRetries, prefix: config.prefix })
+    .prevent,
+  sessionValidator,
+  sessionsController.store,
+);
 
 routes.use(RateLimit);
 
