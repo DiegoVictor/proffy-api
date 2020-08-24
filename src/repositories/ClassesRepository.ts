@@ -48,11 +48,11 @@ class ClassesRepository {
       'users.id',
     );
 
-    if (subject) {
+    if (typeof subject === 'string' && subject.length > 0) {
       query.where('classes.subject', '=', subject);
     }
 
-    if (week_day) {
+    if (typeof week_day !== 'undefined') {
       query.whereExists(function () {
         this.select('class_schedule.*')
           .from('class_schedule')
