@@ -6,7 +6,7 @@
 [![coverage](https://img.shields.io/codecov/c/gh/DiegoVictor/proffy-api?logo=codecov&style=flat-square)](https://codecov.io/gh/DiegoVictor/proffy-api)
 [![MIT License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://github.com/DiegoVictor/proffy-api/blob/master/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)<br>
-[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Proffy&uri=https%3A%2F%2Fraw.githubusercontent.com%2FDiegoVictor%2Fproffy-api%2Fmaster%2FInsomnia_2020-08-16.json)
+[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Proffy&uri=https%3A%2F%2Fraw.githubusercontent.com%2FDiegoVictor%2Fproffy-api%2Fmaster%2FInsomnia_2020-08-22.json)
 
 
 Responsible for provide data to the [`web`](https://github.com/DiegoVictor/proffy-web) and [`mobile`](https://github.com/DiegoVictor/proffy-app) front-ends. Permit to register your class availability and subject, also count the number of teacher connected to users (get contacted by whatsapp). The app has validation and a simple versioning was made.
@@ -17,6 +17,7 @@ Responsible for provide data to the [`web`](https://github.com/DiegoVictor/proff
     * [SQLite](#sqlite)
       * [Migrations](#migrations)
     * [.env](#env)
+    * [Rate Limit & Brute Force (Optional)](#rate-limit--brute-force-optional)
 * [Usage](#usage)
   * [Error Handling](#error-handling)
     * [Errors Reference](#errors-reference)
@@ -69,6 +70,19 @@ In this file you may configure the environment, your app's port and a url to doc
 |NODE_ENV|App environment. The knex's connection configuration used rely on the this key value, so if the environment is `development` the knex connection used will be`development`.|`development`
 |DOCS_URL|An url to docs where users can find more information about the app's internal code errors.|`https://github.com/DiegoVictor/proffy-api#errors-reference`
 
+## Rate Limit & Brute Force (Optional)
+The project comes pre-configured, but you can adjust it as your needs.
+* `src/config/security.ts`
+
+|key|description|default
+|---|---|---
+|duration|Number of seconds before consumed points are reset.|`300`
+|points|Maximum number of points can be consumed over duration.|`10`
+|freeRetries|Maximum number of points can be consumed over duration.|`3`
+|prefix|Maximum number of points can be consumed over duration.|`bruteforce_`
+
+> The lib [`rate-limiter-flexible`](https://github.com/animir/node-rate-limiter-flexible) was used to rate the API's limits, for more configuration information go to [Options](https://github.com/animir/node-rate-limiter-flexible/wiki/Options#options) page and also used to configure brute force prevention, but with a different method of configuration that you can see in [ExpressBrute migration](https://github.com/animir/node-rate-limiter-flexible/wiki/ExpressBrute-migration#options).
+
 # Usage
 To start up the app run:
 ```
@@ -86,7 +100,7 @@ Instead of only throw a simple message and HTTP Status Code this API return frie
   "statusCode": 429,
   "error": "Too Many Requests",
   "message": "Too Many Requests",
-  "code": 549,
+  "code": 529,
   "docs": "https://github.com/DiegoVictor/proffy-api#errors-reference"
 }
 ```
@@ -111,9 +125,8 @@ Instead of only throw a simple message and HTTP Status Code this API return frie
 |542|Invalid token|The login JWT token not contain a valid user id.
 |543|Token not provided|The login JWT token was not sent.
 |544|User does not exists|The provided email not references a user in the database.
-|549|Too Many Requests|You reached at the requests limit.
+|529|Too Many Requests|You reached at the requests limit.
 |550|An unexpected error while updating the user occured|Was not possible to reset user password.
-
 
 ## Pagination
 All the routes with pagination returns 10 records per page, to navigate to other pages just send the `page` query parameter with the number of the page.
