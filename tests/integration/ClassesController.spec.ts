@@ -509,6 +509,102 @@ describe('ClassesController', () => {
     });
   });
 
+  it('should be able to update a class with another subject', async () => {
+    const subject = faker.lorem.word();
+    const schedules = [
+      {
+        week_day: 0,
+        from: '6:00',
+        to: '12:00',
+      },
+    ];
+    const user = await factory.attrs<User>('User');
+    const [user_id] = await connection('users').insert(user);
+    const authorization = `Bearer ${token(user_id)}`;
+
+    const classItem = await factory.attrs<Class>('Class', { user_id });
+    const [class_id] = await connection('classes').insert(classItem);
+
+    await request(app)
+      .post(`/v1/classes`)
+      .set('Authorization', authorization)
+      .send({
+        user_id,
+        subject,
+        bio: faker.lorem.paragraph(),
+        whatsapp: user.whatsapp,
+        cost: classItem.cost,
+        schedules,
+      });
+
+    const updateClass = await connection('classes')
+      .where('id', class_id)
+      .first();
+    expect(updateClass).toMatchObject({
+      id: expect.any(Number),
+      subject,
+      cost: classItem.cost,
+    });
+
+    const classSchedule = await connection('class_schedule')
+      .where('class_id', class_id)
+      .first();
+    expect(classSchedule).toMatchObject({
+      id: expect.any(Number),
+      week_day: 0,
+      from: 360,
+      to: 720,
+    });
+  });
+
+  it('should be able to update a class with the same cost and subject', async () => {
+    const schedules = [
+      {
+        week_day: 0,
+        from: '6:00',
+        to: '12:00',
+      },
+    ];
+    const user = await factory.attrs<User>('User');
+    const [user_id] = await connection('users').insert(user);
+    const authorization = `Bearer ${token(user_id)}`;
+
+    const classItem = await factory.attrs<Class>('Class', { user_id });
+    const [class_id] = await connection('classes').insert(classItem);
+    const { subject, cost } = classItem;
+
+    await request(app)
+      .post(`/v1/classes`)
+      .set('Authorization', authorization)
+      .send({
+        user_id,
+        subject,
+        bio: faker.lorem.paragraph(),
+        whatsapp: user.whatsapp,
+        cost,
+        schedules,
+      });
+
+    const updateClass = await connection('classes')
+      .where('id', class_id)
+      .first();
+    expect(updateClass).toMatchObject({
+      id: expect.any(Number),
+      subject,
+      cost: classItem.cost,
+    });
+
+    const classSchedule = await connection('class_schedule')
+      .where('class_id', class_id)
+      .first();
+    expect(classSchedule).toMatchObject({
+      id: expect.any(Number),
+      week_day: 0,
+      from: 360,
+      to: 720,
+    });
+  });
+
   it('should be able to retrieve a class', async () => {
     const user = await factory.attrs<User>('User');
     const [user_id] = await connection('users').insert(user);
