@@ -39,6 +39,13 @@ interface ClassSchedule {
   class_id: number;
 }
 
+jest.mock('../../src/config/security', () => ({
+  duration: 1,
+  points: 20,
+  freeRetries: 3,
+  prefix: 'bruteforce_',
+}));
+
 describe('ClassesController', () => {
   const url = `http://127.0.0.1:${process.env.APP_PORT}/v1`;
 
