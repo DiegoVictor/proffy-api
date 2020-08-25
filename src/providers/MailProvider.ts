@@ -24,11 +24,11 @@ class MailProvider {
     this.client = transporter;
   }
 
-  public async sendMail({ to, from, subject, html }: MailProps): Promise<void> {
+  public async sendMail({ to, subject, html }: MailProps): Promise<void> {
     await this.client.sendMail({
       from: {
-        name: from?.name || 'Equipe Proffy',
-        address: from?.email || 'noreply@proffy.com.br',
+        name: 'Equipe Proffy',
+        address: 'noreply@proffy.com.br',
       },
       to: { name: to.name, address: to.email },
       subject,
