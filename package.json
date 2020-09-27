@@ -1,7 +1,7 @@
 {
   "name": "proffy",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/server.js",
   "license": "MIT",
   "dependencies": {
     "@hapi/boom": "^9.1.0",
