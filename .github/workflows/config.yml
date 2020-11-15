@@ -8,7 +8,7 @@ jobs:
     env:
       APP_PORT: '3333'
       APP_WEB_URL: 'http://localhost:3000'
-      JWT_SECRET: '4cca6f94fb65d4113055742887079226'
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
       JWT_EXPIRATION_TIME: '7d'
       MAIL_HOST: 'smtp.test.io'
       MAIL_PORT: '587'
