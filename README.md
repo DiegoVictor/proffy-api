@@ -1,5 +1,6 @@
 # [API] Proffy
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/DiegoVictor/proffy-api/CI?logo=github&style=flat-square)](https://github.com/DiegoVictor/proffy-api/actions)
+[![typescript](https://img.shields.io/badge/typescript-3.9.7-3178c6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![redis](https://img.shields.io/badge/redis-3.0.2-d92b21?style=flat-square&logo=redis&logoColor=white)](https://redis.io/)
 [![eslint](https://img.shields.io/badge/eslint-7.6.0-4b32c3?style=flat-square&logo=eslint)](https://eslint.org/)
 [![airbnb-style](https://flat.badgen.net/badge/style-guide/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
@@ -77,10 +78,10 @@ In this file you may configure the environment, your app's port and a url to doc
 |APP_PORT|Port number where the app will run.|`3333`
 |NODE_ENV|App environment. The knex's connection configuration used rely on the this key value, so if the environment is `development` the knex connection used will be`development`.|`development`
 |APP_WEB_URL|Used to create the reset password link (front-end) sent in the recover password email.|`http://127.0.0.1:3000`
-|MAIL_HOST|Hostname or IP address of the email provider service| - 
+|MAIL_HOST|Hostname or IP address of the email provider service| -
 |MAIL_PORT|Service's port| `587`
-|MAIL_USER|Username to authenticate in the email service| - 
-|MAIL_PASSWORD|Password to authenticate in the email service| - 
+|MAIL_USER|Username to authenticate in the email service| -
+|MAIL_PASSWORD|Password to authenticate in the email service| -
 |JWT_SECRET|A alphanumeric random string. Used to create signed tokens.| -
 |JWT_EXPIRATION_TIME|How long time will be the token valid. See [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken#usage) repo for more information.|`7d`
 |REDIS_HOST|Redis host. For Windows users using Docker Toolbox maybe be necessary in your `.env` file set the host to `192.168.99.100` (docker machine IP) instead of localhost or `127.0.0.1`.|`127.0.0.1`
