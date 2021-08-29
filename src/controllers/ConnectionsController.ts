@@ -13,7 +13,7 @@ class ConnectionsController {
 
     await db('connections').insert({ user_id });
 
-    return response.sendStatus(201);
+    return response.sendStatus(204);
   }
 }
 

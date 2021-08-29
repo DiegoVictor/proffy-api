@@ -45,7 +45,7 @@ class UserController {
       bio,
     });
 
-    return response.sendStatus(204);
+    return response.sendStatus(201);
   }
 }
 
