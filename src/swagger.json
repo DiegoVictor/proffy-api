@@ -1,0 +1,18 @@
+{
+  "openapi":"3.0.2",
+  "info": {
+    "title":"Proffy",
+    "version":"1.0",
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/DiegoVictor/proffy-api/blob/master/LICENSE"
+    }
+  },
+  "servers": [
+    {
+      "url":"http://localhost:3333/v1"
+    }
+  ],
+  "paths": {
+  },
+}
