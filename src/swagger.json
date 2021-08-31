@@ -14,6 +14,109 @@
     }
   ],
   "paths": {
+    "/sessions": {
+      "post": {
+        "tags": ["sessions"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "title": "User",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "email": "johndoe@example.com",
+                "password": "123456"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authenticates user and return an access token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "type": "object",
+                      "title": "User",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "user": {
+                    "id": 1,
+                    "email": "johndoe@example.com",
+                    "name": "John"
+                  },
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjI5NTAwODYwLCJleHAiOjE2MzAxMDU2NjB9.M6caH28Vr-4K9FWwr278-TRWM6UDMKN1TYfwi33mCTk"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User not existsor wrong password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "User not exists": {
+                    "description": "User not exists",
+                    "value": {
+                      "statusCode": 400,
+                      "error": "Bad Request",
+                      "message": "User not exists",
+                      "code": 344,
+                      "docs": "https://github.com/DiegoVictor/proffy-api#errors-reference"
+                    }
+                  },
+                  "User and/or password not match": {
+                    "description": "User and/or password not match",
+                    "value": {
+                      "statusCode": 400,
+                      "error": "Bad Request",
+                      "message": "User and/or password not match",
+                      "code": 340,
+                      "docs": "https://github.com/DiegoVictor/proffy-api#errors-reference"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
   },
   "components": {
     "schemas": {
