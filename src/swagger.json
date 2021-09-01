@@ -117,6 +117,72 @@
         }
       }
     },
+    "/users": {
+      "post": {
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema" : {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/User"
+                  },
+                  {
+                    "title": "User",
+                    "required": [
+                      "name",
+                      "surname",
+                      "email",
+                      "password",
+                      "avatar",
+                      "whatsapp",
+                      "bio"
+                    ],
+                    "properties": {
+                      "password": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "name": "John",
+                "surname": "Doe",
+                "email": "johndoe@example.com",
+                "password": "123456",
+                "avatar": "https://avatars2.githubusercontent.com/u/15165349?s=460&u=1013eaaceb8a54984f7f77bc21812ad68f6ef526&v=4",
+                "whatsapp": "16558352882",
+                "bio": "Quia vero neque vel quia ea. Expedita iusto et saepe nostrum id quam. Quibusdam deserunt nostrum ullam enim et dolorum. Est enim vero optio aut iure ut voluptatibus doloribus tenetur."
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creates a new user"
+          },
+          "400": {
+            "description": "Email already in use",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "error": "Bad Request",
+                  "message": "Email already in use",
+                  "code": 240,
+                  "docs": "https://github.com/DiegoVictor/proffy-api#errors-reference"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
   },
   "components": {
     "schemas": {
@@ -139,6 +205,22 @@
           },
           "bio": {
             "type": "string"
+          }
+        }
+      },
+      "Schedule": {
+        "properties": {
+          "weekday": {
+            "type": "integer"
+          },
+          "from": {
+            "type": "integer"
+          },
+          "to": {
+            "type": "integer"
+          },
+          "class_id": {
+            "type": "integer"
           }
         }
       },
