@@ -120,6 +120,28 @@
   },
   "components": {
     "schemas": {
+      "User": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          },
+          "whatsapp": {
+            "type": "string"
+          },
+          "bio": {
+            "type": "string"
+          }
+        }
+      },
       "Error": {
         "properties": {
           "statusCode": {
