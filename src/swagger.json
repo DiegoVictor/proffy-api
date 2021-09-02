@@ -292,6 +292,52 @@
         }
       }
     },
+    "/users/forgot_password": {
+      "post": {
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "title": "User",
+                "required": ["email"],
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "email": "johndoe@example.com"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Send forgot password email"
+          },
+          "400": {
+            "description": "User does not exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "error": "Bad Request",
+                  "message": "User does not exists",
+                  "code": 544,
+                  "docs": "https://github.com/DiegoVictor/proffy-api#errors-reference"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
   },
   "components": {
     "schemas": {
