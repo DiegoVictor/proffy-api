@@ -60,7 +60,7 @@ class FavoritesController {
           schedule => schedule.class_id === favorite.class_id,
         ),
         user_url: `${host_url}/v1/users/${id}`,
-        class_id: `${host_url}/v1/classes/${favorite.class_id}`,
+        class_url: `${host_url}/v1/classes/${favorite.class_id}`,
       };
     });
 
