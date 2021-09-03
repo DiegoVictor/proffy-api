@@ -338,6 +338,85 @@
         }
       }
     },
+    "/users/reset_password": {
+      "post": {
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "password",
+                  "password_confirmation",
+                  "token"
+                ],
+                "properties": {
+                  "password": {
+                    "type": "string"
+                  },
+                  "password_confirmation": {
+                    "type": "string"
+                  },
+                  "token": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "password": "123456",
+                "password_confirmation": "123456",
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTk3NTIwNDM5LCJleHAiOjE1OTc2MDY4Mzl9.ND1b83C0deEEPTADOUdHo0GhLc9hyUG6d6AlUSQi_sA"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Change user's current password"
+          },
+          "400": {
+            "description": "Any error while trying update the user's password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "Token invalid or expired": {
+                    "value": {
+                      "statusCode": 400,
+                      "error": "Bad Request",
+                      "message": "Token invalid or expired",
+                      "code": 540,
+                      "docs": "https://github.com/DiegoVictor/proffy-api#errors-reference"
+                    }
+                  },
+                  "Invalid token": {
+                    "value": {
+                      "statusCode": 400,
+                      "error": "Bad Request",
+                      "message": "Invalid token",
+                      "code": 542,
+                      "docs": "https://github.com/DiegoVictor/proffy-api#errors-reference"
+                    }
+                  },
+                  "An internal server error occurred": {
+                    "value": {
+                      "statusCode": 500,
+                      "error": "Internal Server Error",
+                      "message": "An internal server error occurred",
+                      "code": 550,
+                      "docs": "https://github.com/DiegoVictor/proffy-api#errors-reference"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
   },
   "components": {
     "schemas": {
