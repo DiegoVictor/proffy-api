@@ -28,9 +28,6 @@ class UpdateUserService {
     schedules,
   }: Request): Promise<void> {
     const user = await db('users').where('id', user_id).first();
-    if (!user) {
-      throw badRequest('User not found', { code: 141 });
-    }
 
     const trx = await db.transaction();
     try {
