@@ -446,6 +446,36 @@
           }
         }
       },
+      "post": {
+        "tags": ["Connections"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "example": {
+                "user_id": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Increase the number of connections"
+          }
+        }
+      }
     },
   },
   "components": {
