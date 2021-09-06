@@ -417,6 +417,36 @@
         }
       }
     },
+    "/connections": {
+      "get": {
+        "tags": ["Connections"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lists connections total",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "example": {
+                  "total": 100
+                }
+              }
+            }
+          }
+        }
+      },
+    },
   },
   "components": {
     "schemas": {
