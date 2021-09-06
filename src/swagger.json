@@ -518,6 +518,51 @@
           }
         }
       },
+      "Favorite": {
+        "allOf": [
+          {
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "user_id": {
+                "type": "integer"
+              },
+              "favorited_user_id": {
+                "type": "integer"
+              },
+              "class_id": {
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/User"
+          },
+          {
+            "properties": {
+              "subject": {
+                "type": "string"
+              },
+              "cost": {
+                "type": "integer"
+              },
+              "schedules": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Schedule"
+                }
+              },
+              "class_url": {
+                "type": "string"
+              },
+              "user_url": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
       "Error": {
         "properties": {
           "statusCode": {
