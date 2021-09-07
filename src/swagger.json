@@ -549,6 +549,66 @@
           }
         }
       },
+      "post": {
+        "tags": ["Favorites"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "example": {
+                "user_id": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Set a proffy as favorite"
+          },
+          "400": {
+            "description": "Any error while trying to set other user as favorite",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "You can not favorite yourself": {
+                    "value": {
+                      "statusCode": 400,
+                      "error": "Bad Request",
+                      "message": "You can not favorite yourself",
+                      "code": 440,
+                      "docs": "https://github.com/DiegoVictor/proffy-api#errors-reference"
+                    }
+                  },
+                  "Users not match": {
+                    "value": {
+                      "statusCode": 400,
+                      "error": "Bad Request",
+                      "message": "Users not match",
+                      "code": 444,
+                      "docs": "https://github.com/DiegoVictor/proffy-api#errors-reference"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     },
   },
   "components": {
