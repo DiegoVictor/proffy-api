@@ -635,6 +635,19 @@
           }
         }
       },
+      "Class": {
+        "properties": {
+          "user_id": {
+            "type": "integer"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "cost": {
+            "type": "integer"
+          }
+        }
+      },
       "Schedule": {
         "properties": {
           "weekday": {
