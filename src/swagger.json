@@ -477,6 +477,79 @@
         }
       }
     },
+    "/favorites": {
+      "get": {
+        "tags": ["Favorites"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lists favorited proffys",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Favorite"
+                },
+                "example": [
+                  {
+                    "id": 1,
+                    "user_id": 2,
+                    "favorited_user_id": 1,
+                    "name": "Guilherme",
+                    "email": "guilherme_carvalho42@bol.com.br",
+                    "surname": "Carvalho",
+                    "avatar": "https://avatars2.githubusercontent.com/u/15165349?s=460&u=1013eaaceb8a54984f7f77bc21812ad68f6ef526&v=4",
+                    "whatsapp": "16558352882",
+                    "bio": "Quia vero neque vel quia ea. Expedita iusto et saepe nostrum id quam. Quibusdam deserunt nostrum ullam enim et dolorum. Est enim vero optio aut iure ut voluptatibus doloribus tenetur.",
+                    "class_id": 1,
+                    "subject": "Matemática",
+                    "cost": 90,
+                    "schedules": [
+                      {
+                        "week_day": 1,
+                        "from": 480,
+                        "to": 720,
+                        "class_id": 1
+                      }
+                    ],
+                    "user_url": "http://localhost:3333/v1/users/2",
+                    "class_url": "http://localhost:3333/v1/classes/1"
+                  }
+                ]
+              }
+            },
+            "headers": {
+              "X-Total-Count": {
+                "description": "Total number of registries in the database",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "Link": {
+                "description": "Next, Previous, First and Last page's urls",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+    },
   },
   "components": {
     "schemas": {
