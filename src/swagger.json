@@ -727,6 +727,91 @@
           }
         }
       },
+      "post": {
+        "tags": ["Classes"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Class"
+                  },
+                  {
+                    "title": "Class",
+                    "properties": {
+                      "bio": {
+                        "type": "string"
+                      },
+                      "whatsapp": {
+                        "type": "string"
+                      },
+                      "schedules": {
+                        "type": "array",
+                        "items": {
+                          "title": "Schedule",
+                          "properties": {
+                            "week_day": {
+                              "type": "integer"
+                            },
+                            "from": {
+                              "type": "string"
+                            },
+                            "to": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "user_id": 1,
+                "subject": "Matemática",
+                "bio": "Quo veniam et quia incidunt earum aperiam. Impedit quam rerum doloremque dolores quis ipsam. Fugiat tempore qui et sint animi corporis animi.",
+                "whatsapp": "16558352882",
+                "cost": 90,
+                "schedules": [
+                  {
+                    "week_day": 1,
+                    "from": "8:00",
+                    "to": "12:00"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Create new class availability"
+          },
+          "400": {
+            "description": "Unexpected error while update new classes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 500,
+                  "error": "Internal Server Error",
+                  "message": "An internal server error occurred",
+                  "code": 150,
+                  "docs": "https://github.com/DiegoVictor/proffy-api#errors-reference"
+                }
+              }
+            }
+          }
+        }
+      }
     },
   },
   "components": {
