@@ -719,7 +719,7 @@ describe('ClassesController', () => {
     const response = await request(app)
       .post(`/v1/classes`)
       .set('Authorization', authorization)
-      .expect(400)
+      .expect(404)
       .send({
         user_id,
         subject,
@@ -735,8 +735,8 @@ describe('ClassesController', () => {
     expect(classesCount['count(*)']).toBe(0);
     expect(classScheduleCount['count(*)']).toBe(0);
     expect(response.body).toStrictEqual({
-      statusCode: 400,
-      error: 'Bad Request',
+      statusCode: 404,
+      error: 'Not Found',
       message: 'User not found',
       code: 141,
       docs: process.env.DOCS_URL,

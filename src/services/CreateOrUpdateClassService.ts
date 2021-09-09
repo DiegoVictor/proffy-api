@@ -1,4 +1,4 @@
-import { badRequest, badImplementation } from '@hapi/boom';
+import { badImplementation, notFound } from '@hapi/boom';
 
 import db from '../database/sql';
 import convertStringHourToMinutes from '../utils/convertStringHourToMinutes';
@@ -29,7 +29,7 @@ class UpdateUserService {
   }: Request): Promise<void> {
     const user = await db('users').where('id', user_id).first();
     if (!user) {
-      throw badRequest('User not found', { code: 141 });
+      throw notFound('User not found', { code: 141 });
     }
 
     const trx = await db.transaction();
