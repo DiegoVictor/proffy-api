@@ -185,12 +185,16 @@ GET http://localhost:3333/v1/classes
 ## Routes
 |route|HTTP Method|pagination|params|description|auth method
 |:---|:---:|:---:|:---:|:---:|:---:
-|`/connections`|GET|:x:|`week_day`, `from` and `to` query parameters.|Lists connections total.|Bearer
+|`/sessions`|POST|:x:|Body with user `email` and `password`.|Authenticates user and return an access token.|:x:
+|`/connections`|GET|:x:| - |Lists connections total.|Bearer
 |`/connections`|POST|:x:|Body with `user_id`.|Increase the number of connections.|Bearer
 |`/classes`|GET|:heavy_check_mark:|`week_day`, `subject`, `time`, `page` query parameters.|Lists classes available.|Bearer
 |`/classes/:id`|GET|:x:|`id` of the class.|Return the class.|Bearer
 |`/classes`|POST|:x:|Body with class `subject`, `cost`, user `user_id`, `whatsapp`, `bio` and class schedule `schedules.week_day`, `schedules.from`, `schedules.to`.|Create new class availability.|Bearer
+|`/users`|POST|:x:|Body with user `name`, `surname`, `email`, `password`, `avatar` (url), `whatsapp` and `bio`.|Creates a new user.|:x:
 |`/users/:id`|GET|:x:|`id` of the user.|Return one user.|Bearer
+|`/users/forgot_password`|POST|:x:|Body with `email`.|Send forgot password email.|:x:
+|`/users//users/reset_password`|POST|:x:|Body with `password`, `password_confirmation` and `token`.|Change user's current password.|:x:
 |`/favorites`|GET|:heavy_check_mark:|`page` query parameters.|Lists favorited proffys.|Bearer
 |`/favorites`|POST|:x:|Body with `user_id` from user that intending to be favorite.|Set a proffy as favorite.|Bearer
 
