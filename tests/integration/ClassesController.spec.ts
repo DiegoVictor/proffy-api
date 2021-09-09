@@ -10,7 +10,7 @@ interface User {
   id: number;
   email: string;
   name: string;
-  password: string;
+  password?: string;
   avatar: string;
   whatsapp: string;
   bio: string;
@@ -18,7 +18,7 @@ interface User {
 
 interface Class {
   id: number;
-  user_id: number;
+  user_id?: number;
   whatsapp: string;
   name: string;
   surname: string;

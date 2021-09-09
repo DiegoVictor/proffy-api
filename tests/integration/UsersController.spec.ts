@@ -11,7 +11,7 @@ interface User {
   email: string;
   name: string;
   surname: string;
-  password: string;
+  password?: string;
   avatar: string;
   whatsapp: string;
   bio: string;
@@ -21,7 +21,7 @@ interface ClassItem {
   id: number;
   subject: string;
   cost: number;
-  user_id: number;
+  user_id?: number;
 }
 
 interface ClassSchedule {
