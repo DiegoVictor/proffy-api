@@ -51,7 +51,7 @@ describe('ConnectionsController', () => {
   it('should be able to count a new connection', async () => {
     await request(app)
       .post('/v1/connections')
-      .expect(201)
+      .expect(204)
       .set('Authorization', authorization)
       .send({ user_id: faker.random.number() });
 

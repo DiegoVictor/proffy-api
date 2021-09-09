@@ -46,7 +46,7 @@ describe('UsersController', () => {
 
   it('should be able to store a new user', async () => {
     const user = await factory.attrs<User>('User');
-    await request(app).post('/v1/users').expect(204).send(user);
+    await request(app).post('/v1/users').expect(201).send(user);
 
     const savedUser = await connection('users')
       .select('email', 'name', 'surname', 'avatar', 'whatsapp', 'bio')
