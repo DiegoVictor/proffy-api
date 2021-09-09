@@ -813,6 +813,109 @@
         }
       }
     },
+    "/classes/{id}": {
+      "get": {
+        "tags": ["Classes"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the class",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    {
+                      "$ref": "#/components/schemas/Class"
+                    },
+                    {
+                      "$ref": "#/components/schemas/User"
+                    },
+                    {
+                      "title": "User",
+                      "properties": {
+                        "schedules": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Schedule"
+                          }
+                        },
+                        "url": {
+                          "type": "string"
+                        },
+                        "user_url": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "id": 1,
+                  "subject": "Matemática",
+                  "cost": 90,
+                  "user_id": 1,
+                  "email": "johndoe@example.com",
+                  "name": "John",
+                  "surname": "Doe",
+                  "avatar": "https://avatars2.githubusercontent.com/u/15165349?s=460&u=1013eaaceb8a54984f7f77bc21812ad68f6ef526&v=4",
+                  "whatsapp": "16558352882",
+                  "bio": "Quia vero neque vel quia ea. Expedita iusto et saepe nostrum id quam. Quibusdam deserunt nostrum ullam enim et dolorum. Est enim vero optio aut iure ut voluptatibus doloribus tenetur.",
+                  "schedules": [
+                    {
+                      "week_day": 1,
+                      "from": 480,
+                      "to": 720,
+                      "class_id": 1
+                    }
+                  ],
+                  "url": "http://localhost:3333/v1/classes/1",
+                  "user_url": "http://localhost:3333/v1/users/1"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Class not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "error": "Not Found",
+                  "message": "Class not found",
+                  "code": 144,
+                  "docs": "https://github.com/DiegoVictor/proffy-api#errors-reference"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   },
   "components": {
     "schemas": {
