@@ -5,7 +5,7 @@
     "version":"1.0",
     "license": {
       "name": "MIT",
-      "url": "https://github.com/DiegoVictor/proffy-api/blob/master/LICENSE"
+      "url": "https://raw.githubusercontent.com/DiegoVictor/proffy-api/master/LICENSE"
     }
   },
   "servers": [
