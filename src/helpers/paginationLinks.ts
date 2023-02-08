@@ -6,14 +6,14 @@ interface PageLinks {
 }
 export default (
   page: number,
-  pages_total: number,
-  resource_url: string,
+  pagesTotal: number,
+  resourceUrl: string,
 ): PageLinks => {
-  const url = `${resource_url}?page=`;
+  const url = `${resourceUrl}?page=`;
   const links: PageLinks = {};
 
-  if (page < pages_total) {
-    links.last = url + pages_total;
+  if (page < pagesTotal) {
+    links.last = url + pagesTotal;
     links.next = url + (page + 1);
   }
 
