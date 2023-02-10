@@ -1,5 +1,5 @@
 import knex from 'knex';
 
-import database from '../config/database';
+import config from '../../knexfile';
 
-export default knex(database);
+export const db = knex(config);
