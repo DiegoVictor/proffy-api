@@ -1,6 +1,6 @@
 import { notFound } from '@hapi/boom';
 
-import db from '../database/sql';
+import { db } from '../database/sql';
 
 interface Request {
   id: string;

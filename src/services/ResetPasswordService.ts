@@ -2,8 +2,7 @@ import { verify } from 'jsonwebtoken';
 import { badRequest, badImplementation } from '@hapi/boom';
 import { hash } from 'bcryptjs';
 
-import db from '../database/sql';
-import auth from '../config/auth';
+import { db } from '../database/sql';
 
 interface Request {
   token: string;

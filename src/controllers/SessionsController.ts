@@ -3,8 +3,7 @@ import bcryptjs from 'bcryptjs';
 import { badRequest } from '@hapi/boom';
 import { Request, Response } from 'express';
 
-import auth from '../config/auth';
-import db from '../database/sql';
+import { db } from '../database/sql';
 
 class SessionsController {
   async store(request: Request, response: Response): Promise<Response> {

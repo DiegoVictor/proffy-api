@@ -1,9 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { badRequest } from '@hapi/boom';
 
-import db from '../database/sql';
-import MailProvider from '../providers/MailProvider';
-import auth from '../config/auth';
+import { db } from '../database/sql';
 
 interface Request {
   email: string;
