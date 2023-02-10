@@ -21,7 +21,7 @@ class ClassesController {
     request: Request & CustomRequest,
     response: Response,
   ): Promise<Response> {
-    const { host_url, current_url } = request;
+    const { hostUrl, currentUrl } = request;
     const page = Number(request.query.page) || 1;
     const limit = 10;
 
@@ -57,20 +57,20 @@ class ClassesController {
 
     const pages_total = Math.ceil(parseInt(count, 10) / limit);
     if (pages_total > 1) {
-      response.links(paginationLinks(page, pages_total, current_url));
+      response.links(paginationLinks(page, pages_total, currentUrl));
     }
 
     return response.json(
       classesSerialized.map(classItem => ({
         ...classItem,
-        url: `${current_url}/${classItem.id}`,
-        user_url: `${host_url}/v1/users/${classItem.user_id}`,
+        url: `${currentUrl}/${classItem.id}`,
+        user_url: `${hostUrl}/v1/users/${classItem.user_id}`,
       })),
     );
   }
 
   async show(request: Request, response: Response): Promise<Response> {
-    const { host_url, current_url } = request;
+    const { hostUrl, currentUrl } = request;
     const { id } = request.params;
 
     const getClassService = new GetClassService();
@@ -78,8 +78,8 @@ class ClassesController {
 
     return response.json({
       ...classItem,
-      url: current_url,
-      user_url: `${host_url}/v1/users/${classItem.user_id}`,
+      url: currentUrl,
+      user_url: `${hostUrl}/v1/users/${classItem.user_id}`,
     });
   }
 

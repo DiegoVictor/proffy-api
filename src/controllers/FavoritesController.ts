@@ -21,7 +21,7 @@ interface Favorite {
 
 class FavoritesController {
   async index(request: Request, response: Response): Promise<Response> {
-    const { host_url, current_url } = request;
+    const { hostUrl, currentUrl } = request;
     const page = Number(request.query.page) || 1;
     const limit = 10;
     const { id } = request.user;
@@ -59,8 +59,8 @@ class FavoritesController {
         schedules: schedules.filter(
           schedule => schedule.class_id === favorite.class_id,
         ),
-        user_url: `${host_url}/v1/users/${id}`,
-        class_url: `${host_url}/v1/classes/${favorite.class_id}`,
+        user_url: `${hostUrl}/v1/users/${id}`,
+        class_url: `${hostUrl}/v1/classes/${favorite.class_id}`,
       };
     });
 
@@ -69,7 +69,7 @@ class FavoritesController {
 
     const pages_total = Math.ceil(parseInt(count, 10) / limit);
     if (pages_total > 1) {
-      response.links(paginationLinks(page, pages_total, current_url));
+      response.links(paginationLinks(page, pages_total, currentUrl));
     }
 
     return response.json(favoritesSerialized);

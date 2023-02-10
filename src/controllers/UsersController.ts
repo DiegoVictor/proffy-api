@@ -7,7 +7,7 @@ import GetUserService from '../services/GetUserService';
 
 class UserController {
   async show(request: Request, response: Response): Promise<Response> {
-    const { host_url, current_url } = request;
+    const { hostUrl, currentUrl } = request;
     const { id } = request.params;
 
     const getUserService = new GetUserService();
@@ -15,8 +15,8 @@ class UserController {
 
     return response.json({
       ...user,
-      url: current_url,
-      class_url: `${host_url}/v1/classes/${user.class_id}`,
+      url: currentUrl,
+      class_url: `${hostUrl}/v1/classes/${user.class_id}`,
     });
   }
 
