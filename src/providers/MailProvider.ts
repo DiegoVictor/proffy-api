@@ -1,7 +1,5 @@
 import nodemailer, { Transporter } from 'nodemailer';
 
-import mail from '../config/mail';
-
 interface Recipient {
   name: string;
   email: string;
@@ -19,7 +17,7 @@ export class MailProvider {
 
   constructor() {
     const transporter = nodemailer.createTransport(
-      `smtp://${mail.auth.user}:${mail.auth.pass}@${mail.host}:${mail.port}/`,
+      `smtp://${process.env.MAIL_USER}:${process.env.MAIL_PASSWORD}@${process.env.MAIL_HOST}:${process.env.MAIL_PORT}/`,
     );
     this.client = transporter;
   }
