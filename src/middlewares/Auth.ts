@@ -1,9 +1,6 @@
-import { promisify } from 'util';
 import jwt from 'jsonwebtoken';
 import { badRequest, unauthorized } from '@hapi/boom';
 import { Request, Response, NextFunction } from 'express';
-
-import auth from '../config/auth';
 
 interface Token {
   iat: number;
@@ -25,8 +22,9 @@ export default async (
   const [, token] = authorization.split(' ');
 
   try {
-    const decoded = await promisify(jwt.verify)(token, auth.secret);
+    const decoded = jwt.verify(token, String(process.env.JWT_SECRET));
     const { id } = decoded as Token;
+
     request.user = { id: parseInt(id, 10) };
 
     next();
