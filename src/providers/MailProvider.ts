@@ -14,7 +14,7 @@ interface MailProps {
   html: string;
 }
 
-class MailProvider {
+export class MailProvider {
   private client: Transporter;
 
   constructor() {
@@ -36,5 +36,3 @@ class MailProvider {
     });
   }
 }
-
-export default MailProvider;
