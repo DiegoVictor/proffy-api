@@ -15,7 +15,7 @@ class SendForgotPasswordEmailService {
       throw badRequest('User does not exists', { code: 544 });
     }
 
-    const token = jwt.sign({ id: user.id }, auth.secret, {
+    const token = jwt.sign({ id: user.id }, String(process.env.JWT_SECRET), {
       expiresIn: '1d',
     });
 

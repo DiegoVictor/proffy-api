@@ -19,9 +19,13 @@ class SessionsController {
     }
 
     return response.json({
-      user: { id: user.id, email: user.email, name: user.name },
-      token: jwt.sign({ id: user.id }, auth.secret, {
-        expiresIn: auth.expirationTime,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+      },
+      token: jwt.sign({ id: user.id }, String(process.env.JWT_SECRET), {
+        expiresIn: process.env.JWT_EXPIRATION_TIME,
       }),
     });
   }

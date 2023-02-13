@@ -19,8 +19,9 @@ class ResetPasswordService {
   public async execute({ token, password }: Request): Promise<void> {
     let userId: string;
     try {
-      const decoded = verify(token, auth.secret);
+      const decoded = verify(token, String(process.env.JWT_SECRET));
       const { id } = decoded as Token;
+
       userId = id;
     } catch (err) {
       throw badRequest('Token invalid or expired', { code: 540 });
