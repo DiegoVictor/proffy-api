@@ -15,7 +15,7 @@ interface Token {
   id: string;
 }
 
-class ResetPasswordService {
+export class ResetPasswordService {
   public async execute({ token, password }: Request): Promise<void> {
     let userId: string;
     try {
@@ -47,5 +47,3 @@ class ResetPasswordService {
     }
   }
 }
-
-export default ResetPasswordService;

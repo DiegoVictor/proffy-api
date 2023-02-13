@@ -2,12 +2,13 @@ import jwt from 'jsonwebtoken';
 import { badRequest } from '@hapi/boom';
 
 import { db } from '../database/sql';
+import { MailProvider } from '../providers/MailProvider';
 
 interface Request {
   email: string;
 }
 
-class SendForgotPasswordEmailService {
+export class SendForgotPasswordEmailService {
   public async execute({ email }: Request): Promise<void> {
     const user = await db('users').where('email', email).first();
 
@@ -34,5 +35,3 @@ class SendForgotPasswordEmailService {
     });
   }
 }
-
-export default SendForgotPasswordEmailService;

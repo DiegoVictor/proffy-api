@@ -7,7 +7,7 @@ interface Request {
   favorited_user_id: number;
 }
 
-class FavoriteUserService {
+export class FavoriteUserService {
   public async execute({ user_id, favorited_user_id }: Request): Promise<void> {
     if (user_id === favorited_user_id) {
       throw badRequest('You can not favorite yourself', { code: 440 });
@@ -32,5 +32,3 @@ class FavoriteUserService {
     }
   }
 }
-
-export default FavoriteUserService;

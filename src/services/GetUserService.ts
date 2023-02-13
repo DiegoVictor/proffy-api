@@ -38,7 +38,7 @@ interface SerializedClass {
   }[];
 }
 
-class GetUserService {
+export class GetUserService {
   public async execute({ id }: Request): Promise<SerializedClass> {
     const user: User = await db('users')
       .join('classes', 'users.id', '=', 'classes.user_id')
@@ -71,5 +71,3 @@ class GetUserService {
     };
   }
 }
-
-export default GetUserService;

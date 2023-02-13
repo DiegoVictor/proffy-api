@@ -18,7 +18,7 @@ interface Request {
   schedules: Schedule[];
 }
 
-class UpdateUserService {
+export class CreateOrUpdateClassService {
   public async execute({
     user_id,
     bio,
@@ -79,5 +79,3 @@ class UpdateUserService {
     }
   }
 }
-
-export default UpdateUserService;
