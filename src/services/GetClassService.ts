@@ -6,20 +6,6 @@ interface Request {
   id: string;
 }
 
-interface Class {
-  id: number;
-  whatsapp: string;
-  name: string;
-  surname: string;
-  bio: string;
-  avatar: string;
-  subject: string;
-  cost: number;
-  week_day: number;
-  from: string;
-  to: string;
-}
-
 interface SerializedClass {
   id: number;
   user_id?: number;
