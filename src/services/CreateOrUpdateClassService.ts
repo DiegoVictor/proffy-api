@@ -1,7 +1,7 @@
 import { badImplementation, notFound } from '@hapi/boom';
 
 import { db } from '../database/sql';
-import convertStringHourToMinutes from '../utils/convertStringHourToMinutes';
+import { convertStringHourToMinutes } from '../utils/convertStringHourToMinutes';
 
 interface Schedule {
   week_day: number;
