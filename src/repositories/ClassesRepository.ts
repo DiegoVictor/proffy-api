@@ -39,7 +39,7 @@ interface SerializedClass {
 class ClassesRepository {
   queryBySubjectInWeekDayAtTime(
     subject: string | null,
-    week_day: number | null,
+    weekDay: number | null,
     time: number | null,
   ): Knex.QueryBuilder {
     const query = db('classes').join(
@@ -53,12 +53,12 @@ class ClassesRepository {
       query.where('classes.subject', '=', subject);
     }
 
-    if (typeof week_day !== 'undefined') {
+    if (typeof weekDay !== 'undefined') {
       query.whereExists(function () {
         this.select('class_schedule.*')
           .from('class_schedule')
           .whereRaw('`class_schedule`.`class_id` = `classes`.`id`')
-          .whereRaw('`class_schedule`.`week_day` = ??', [week_day]);
+          .whereRaw('`class_schedule`.`week_day` = ??', [weekDay]);
       });
     }
 
@@ -77,12 +77,12 @@ class ClassesRepository {
 
   async countBySubjectInWeekDayAtTime(
     subject: string | null,
-    week_day: number | null,
+    weekDay: number | null,
     time: number | null,
   ): Promise<string> {
     const [count] = await this.queryBySubjectInWeekDayAtTime(
       subject,
-      week_day,
+      weekDay,
       time,
     ).count();
     return count['count(*)'];
