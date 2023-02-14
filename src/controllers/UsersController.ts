@@ -21,15 +21,8 @@ class UserController {
   }
 
   async store(request: Request, response: Response): Promise<Response> {
-    const {
-      email,
-      password,
-      name,
-      surname,
-      avatar,
-      whatsapp,
-      bio,
-    } = request.body;
+    const { email, password, name, surname, avatar, whatsapp, bio } =
+      request.body;
     const user = await db('users').where('email', email).first();
 
     if (user) {
