@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { hash } from 'bcryptjs';
 
 import { db } from '../database/sql';
-import GetUserService from '../services/GetUserService';
+import { GetUserService } from '../services/GetUserService';
 
 class UserController {
   async show(request: Request, response: Response): Promise<Response> {

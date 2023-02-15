@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 
 import { db } from '../database/sql';
-import FavoriteUserService from '../services/FavoriteUserService';
+import { FavoriteUserService } from '../services/FavoriteUserService';
 import paginationLinks from '../helpers/paginationLinks';
-import FavoritesRepository from '../repositories/FavoritesRepository';
+import { FavoritesRepository } from '../repositories/FavoritesRepository';
 
 interface Favorite {
   id: number;
