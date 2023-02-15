@@ -36,7 +36,7 @@ interface SerializedClass {
   }[];
 }
 
-class ClassesRepository {
+export class ClassesRepository {
   queryBySubjectInWeekDayAtTime(
     subject: string | null,
     weekDay: number | null,
@@ -108,5 +108,3 @@ class ClassesRepository {
     return classesSerialized;
   }
 }
-
-export default ClassesRepository;

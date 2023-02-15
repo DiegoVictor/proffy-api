@@ -19,7 +19,7 @@ interface Favorite {
   cost: number;
 }
 
-class FavoritesController {
+export class FavoritesController {
   async index(request: Request, response: Response): Promise<Response> {
     const { hostUrl, currentUrl } = request;
     const page = Number(request.query.page) || 1;
@@ -85,5 +85,3 @@ class FavoritesController {
     return response.sendStatus(204);
   }
 }
-
-export default FavoritesController;

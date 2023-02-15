@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import { ResetPasswordService } from '../services/ResetPasswordService';
 
+export class ResetPasswordController {
   public async store(request: Request, response: Response): Promise<Response> {
     const { password, token } = request.body;
 
@@ -14,5 +15,3 @@ import { ResetPasswordService } from '../services/ResetPasswordService';
     return response.sendStatus(204);
   }
 }
-
-export default ResetPasswordController;

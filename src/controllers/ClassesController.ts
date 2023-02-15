@@ -16,7 +16,7 @@ interface CustomRequest {
 
 const classesRepository = new ClassesRepository();
 
-class ClassesController {
+export class ClassesController {
   async index(
     request: Request & CustomRequest,
     response: Response,
@@ -100,4 +100,3 @@ class ClassesController {
     return response.sendStatus(204);
   }
 }
-export default ClassesController;

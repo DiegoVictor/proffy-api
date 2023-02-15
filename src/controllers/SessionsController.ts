@@ -5,7 +5,7 @@ import { Request, Response } from 'express';
 
 import { db } from '../database/sql';
 
-class SessionsController {
+export class SessionsController {
   async store(request: Request, response: Response): Promise<Response> {
     const { email, password } = request.body;
     const user = await db('users').where('email', email).first();
@@ -30,5 +30,3 @@ class SessionsController {
     });
   }
 }
-
-export default SessionsController;

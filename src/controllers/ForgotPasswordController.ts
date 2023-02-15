@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import { SendForgotPasswordEmailService } from '../services/SendForgotPasswordEmailService';
 
-class ForgotPasswordController {
+export class ForgotPasswordController {
   public async store(request: Request, response: Response): Promise<Response> {
     const { email } = request.body;
 
@@ -14,5 +14,3 @@ class ForgotPasswordController {
     return response.sendStatus(204);
   }
 }
-
-export default ForgotPasswordController;

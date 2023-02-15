@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import { db } from '../database/sql';
 
-class ConnectionsController {
+export class ConnectionsController {
   async index(_: Request, response: Response): Promise<Response> {
     const [{ total }] = await db('connections').count('* as total');
     return response.json({ total });
@@ -16,5 +16,3 @@ class ConnectionsController {
     return response.sendStatus(204);
   }
 }
-
-export default ConnectionsController;

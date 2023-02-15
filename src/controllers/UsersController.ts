@@ -5,7 +5,7 @@ import { hash } from 'bcryptjs';
 import { db } from '../database/sql';
 import { GetUserService } from '../services/GetUserService';
 
-class UserController {
+export class UsersController {
   async show(request: Request, response: Response): Promise<Response> {
     const { hostUrl, currentUrl } = request;
     const { id } = request.params;
@@ -41,5 +41,3 @@ class UserController {
     return response.sendStatus(201);
   }
 }
-
-export default UserController;
