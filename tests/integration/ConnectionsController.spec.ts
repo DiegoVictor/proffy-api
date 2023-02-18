@@ -1,5 +1,5 @@
 import request from 'supertest';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 import connection from '../../src/database/sql';
 import factory from '../utils/factory';
