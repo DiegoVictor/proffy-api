@@ -53,7 +53,7 @@ describe('ConnectionsController', () => {
       .post('/v1/connections')
       .expect(204)
       .set('Authorization', authorization)
-      .send({ user_id: faker.random.number() });
+      .send({ user_id: faker.datatype.number() });
 
     const [connectionsCount] = await db('connections').count();
     expect(connectionsCount['count(*)']).toBe(1);

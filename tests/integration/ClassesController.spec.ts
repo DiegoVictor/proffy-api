@@ -416,7 +416,7 @@ describe('ClassesController', () => {
 
   it('should be able to create new class', async () => {
     const subject = 'Matemática';
-    const cost = faker.random.number();
+    const cost = faker.datatype.number();
     const schedules = [
       {
         week_day: 0,
@@ -636,7 +636,7 @@ describe('ClassesController', () => {
     const [user_id] = await db('users').insert(user);
     const authorization = `Bearer ${token(user_id)}`;
 
-    const class_id = faker.random.number();
+    const class_id = faker.datatype.number();
 
     const response = await request(app)
       .get(`/v1/classes/${class_id}`)
@@ -655,7 +655,7 @@ describe('ClassesController', () => {
 
   it('should not be able to create new class', async () => {
     const subject = 'Matemática';
-    const cost = faker.random.number();
+    const cost = faker.datatype.number();
     const schedules = [
       {
         week_day: 0,
@@ -697,7 +697,7 @@ describe('ClassesController', () => {
 
   it('should not be able to create new class with an user that not exists', async () => {
     const subject = 'Matemática';
-    const cost = faker.random.number();
+    const cost = faker.datatype.number();
     const schedules = [
       {
         week_day: 0,
@@ -705,7 +705,7 @@ describe('ClassesController', () => {
         to: '13:00',
       },
     ];
-    const user_id = faker.random.number();
+    const user_id = faker.datatype.number();
     const authorization = `Bearer ${token(user_id)}`;
 
     const response = await request(app)
@@ -718,7 +718,7 @@ describe('ClassesController', () => {
         cost,
         schedules,
         bio: faker.lorem.paragraph(),
-        whatsapp: faker.phone.phoneNumber(),
+        whatsapp: faker.phone.number(),
       });
 
     const [classesCount] = await db('classes').count();

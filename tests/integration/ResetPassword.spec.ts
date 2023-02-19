@@ -72,7 +72,7 @@ describe('ResetController', () => {
 
   it("should not be able to update a invalid user's password", async () => {
     const password = faker.random.alphaNumeric(16);
-    const resetPasswordToken = token(faker.random.number());
+    const resetPasswordToken = token(faker.datatype.number());
 
     const response = await request(app)
       .post('/v1/users/reset_password')

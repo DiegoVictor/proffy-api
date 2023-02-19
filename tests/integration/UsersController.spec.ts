@@ -89,7 +89,7 @@ describe('UsersController', () => {
   });
 
   it('should not be able to retrieve an user that not exists', async () => {
-    const user_id = faker.random.number();
+    const user_id = faker.datatype.number();
     const authorization = `Bearer ${token(user_id)}`;
 
     const response = await request(app)
