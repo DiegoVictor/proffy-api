@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { faker } from '@faker-js/faker';
 
-import connection from '../../src/database/sql';
+import { db } from '../../src/database/sql';
 import factory from '../utils/factory';
 import app from '../../src/app';
 
@@ -22,17 +22,17 @@ jest.mock('nodemailer', () => ({
 
 describe('ForgotPasswordController', () => {
   beforeEach(async () => {
-    await connection.migrate.rollback();
-    await connection.migrate.latest();
+    await db.migrate.rollback();
+    await db.migrate.latest();
   });
 
   afterAll(async () => {
-    await connection.destroy();
+    await db.destroy();
   });
 
   it('should be able to start forgot password process', async () => {
     const user = await factory.attrs<User>('User');
-    await connection('users').insert(user);
+    await db('users').insert(user);
 
     await request(app)
       .post('/v1/users/forgot_password')

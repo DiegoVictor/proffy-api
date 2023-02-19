@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { faker } from '@faker-js/faker';
 
-import connection from '../../src/database/sql';
+import { db } from '../../src/database/sql';
 import factory from '../utils/factory';
 import app from '../../src/app';
 import token from '../utils/jwtoken';
@@ -22,24 +22,24 @@ describe('ConnectionsController', () => {
 
   beforeAll(async () => {
     user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
     authorization = `Bearer ${token(user_id)}`;
   });
 
   beforeEach(async () => {
-    await connection.migrate.rollback();
-    await connection.migrate.latest();
+    await db.migrate.rollback();
+    await db.migrate.latest();
   });
 
   afterAll(async () => {
-    await connection.destroy();
+    await db.destroy();
   });
 
   it('should be able to get total of connections', async () => {
     const total = 10;
     const connections = await factory.attrsMany('Connection', total);
 
-    await connection('connections').insert(connections);
+    await db('connections').insert(connections);
 
     const response = await request(app)
       .get('/v1/connections')
@@ -55,7 +55,7 @@ describe('ConnectionsController', () => {
       .set('Authorization', authorization)
       .send({ user_id: faker.random.number() });
 
-    const [connectionsCount] = await connection('connections').count();
+    const [connectionsCount] = await db('connections').count();
     expect(connectionsCount['count(*)']).toBe(1);
   });
 });

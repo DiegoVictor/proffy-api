@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import { hash } from 'bcryptjs';
 
 import app from '../../src/app';
-import connection from '../../src/database/sql';
+import { db } from '../../src/database/sql';
 import factory from '../utils/factory';
 
 interface User {
@@ -19,12 +19,12 @@ interface User {
 
 describe('SessionsController', () => {
   beforeEach(async () => {
-    await connection.migrate.rollback();
-    await connection.migrate.latest();
+    await db.migrate.rollback();
+    await db.migrate.latest();
   });
 
   afterAll(async () => {
-    await connection.destroy();
+    await db.destroy();
   });
 
   it('should be able to login', async () => {
@@ -33,7 +33,7 @@ describe('SessionsController', () => {
       password: await hash(password, 8),
     });
 
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
 
     const response = await request(app)
       .post('/v1/sessions')
@@ -49,7 +49,7 @@ describe('SessionsController', () => {
     const password = faker.internet.password();
     const user = await factory.attrs<User>('User');
 
-    await connection('users').insert(user);
+    await db('users').insert(user);
 
     const response = await request(app)
       .post('/v1/sessions')

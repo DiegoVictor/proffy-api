@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { faker } from '@faker-js/faker';
 
-import connection from '../../src/database/sql';
+import { db } from '../../src/database/sql';
 import factory from '../utils/factory';
 import app from '../../src/app';
 import token from '../utils/jwtoken';
@@ -43,24 +43,24 @@ describe('FavoritesController', () => {
   const url = `http://127.0.0.1:${process.env.APP_PORT}/v1`;
 
   beforeEach(async () => {
-    await connection.migrate.rollback();
-    await connection.migrate.latest();
+    await db.migrate.rollback();
+    await db.migrate.latest();
   });
 
   afterAll(async () => {
-    await connection.destroy();
+    await db.destroy();
   });
 
   it('should be able to get a page of favorites', async () => {
     const user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
     const authorization = `Bearer ${token(user_id)}`;
 
     const favoritesCount = 15;
     const favorites = await factory.attrsMany<User>('User', favoritesCount);
 
-    await connection('users').insert(favorites);
-    await connection('favorites').insert(
+    await db('users').insert(favorites);
+    await db('favorites').insert(
       favorites.map((_, index) => ({
         user_id,
         favorited_user_id: index + 2,
@@ -75,14 +75,14 @@ describe('FavoritesController', () => {
       })),
     );
 
-    await connection('classes').insert(classes);
+    await db('classes').insert(classes);
 
     const schedules = await factory.attrsMany<ClassSchedule>(
       'ClassSchedule',
       favoritesCount,
     );
 
-    await connection('class_schedule').insert(
+    await db('class_schedule').insert(
       schedules.map((schedule, index) => ({
         ...schedule,
         class_id: index + 1,
@@ -94,7 +94,7 @@ describe('FavoritesController', () => {
       .set('Authorization', authorization)
       .send();
 
-    const savedFavorites = await connection('favorites')
+    const savedFavorites = await db('favorites')
       .join('users', 'favorites.user_id', '=', 'users.id')
       .join('classes', 'users.id', '=', 'classes.user_id')
       .limit(10)
@@ -113,7 +113,7 @@ describe('FavoritesController', () => {
         'classes.cost',
       );
 
-    const savedSchedules = await connection('class_schedule')
+    const savedSchedules = await db('class_schedule')
       .whereIn(
         'class_id',
         savedFavorites.map(favorite => favorite.class_id),
@@ -142,14 +142,14 @@ describe('FavoritesController', () => {
 
   it('should be able to get the second page of favorites', async () => {
     const user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
     const authorization = `Bearer ${token(user_id)}`;
 
     const favoritesCount = 15;
     const favorites = await factory.attrsMany<User>('User', favoritesCount);
 
-    await connection('users').insert(favorites);
-    await connection('favorites').insert(
+    await db('users').insert(favorites);
+    await db('favorites').insert(
       favorites.map((_, index) => ({
         user_id,
         favorited_user_id: index + 2,
@@ -164,14 +164,14 @@ describe('FavoritesController', () => {
       })),
     );
 
-    await connection('classes').insert(classes);
+    await db('classes').insert(classes);
 
     const schedules = await factory.attrsMany<ClassSchedule>(
       'ClassSchedule',
       favoritesCount,
     );
 
-    await connection('class_schedule').insert(
+    await db('class_schedule').insert(
       schedules.map((schedule, index) => ({
         ...schedule,
         class_id: index + 1,
@@ -183,7 +183,7 @@ describe('FavoritesController', () => {
       .set('Authorization', authorization)
       .send();
 
-    const savedFavorites = await connection('favorites')
+    const savedFavorites = await db('favorites')
       .join('users', 'favorites.user_id', '=', 'users.id')
       .join('classes', 'users.id', '=', 'classes.user_id')
       .limit(10)
@@ -203,7 +203,7 @@ describe('FavoritesController', () => {
         'classes.cost',
       );
 
-    const savedSchedules = await connection('class_schedule')
+    const savedSchedules = await db('class_schedule')
       .whereIn(
         'class_id',
         savedFavorites.map(favorite => favorite.class_id),
@@ -232,14 +232,14 @@ describe('FavoritesController', () => {
 
   it('should be able to get all favorites', async () => {
     const user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
     const authorization = `Bearer ${token(user_id)}`;
 
     const favoritesCount = 5;
     const favorites = await factory.attrsMany<User>('User', favoritesCount);
 
-    await connection('users').insert(favorites);
-    await connection('favorites').insert(
+    await db('users').insert(favorites);
+    await db('favorites').insert(
       favorites.map((_, index) => ({
         user_id,
         favorited_user_id: index + 2,
@@ -254,14 +254,14 @@ describe('FavoritesController', () => {
       })),
     );
 
-    await connection('classes').insert(classes);
+    await db('classes').insert(classes);
 
     const schedules = await factory.attrsMany<ClassSchedule>(
       'ClassSchedule',
       favoritesCount,
     );
 
-    await connection('class_schedule').insert(
+    await db('class_schedule').insert(
       schedules.map((schedule, index) => ({
         ...schedule,
         class_id: index + 1,
@@ -273,7 +273,7 @@ describe('FavoritesController', () => {
       .set('Authorization', authorization)
       .send();
 
-    const savedFavorites = await connection('favorites')
+    const savedFavorites = await db('favorites')
       .join('users', 'favorites.user_id', '=', 'users.id')
       .join('classes', 'users.id', '=', 'classes.user_id')
       .limit(10)
@@ -292,7 +292,7 @@ describe('FavoritesController', () => {
         'classes.cost',
       );
 
-    const savedSchedules = await connection('class_schedule')
+    const savedSchedules = await db('class_schedule')
       .whereIn(
         'class_id',
         savedFavorites.map(favorite => favorite.class_id),
@@ -322,12 +322,10 @@ describe('FavoritesController', () => {
   it('should be able to save as favorite', async () => {
     const [user, favorited_user] = await factory.attrsMany<User>('User', 2);
 
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
     const authorization = `Bearer ${token(user_id)}`;
 
-    const [favorited_user_id] = await connection('users').insert(
-      favorited_user,
-    );
+    const [favorited_user_id] = await db('users').insert(favorited_user);
 
     await request(app)
       .post('/v1/favorites')
@@ -337,7 +335,7 @@ describe('FavoritesController', () => {
         user_id: favorited_user_id,
       });
 
-    const favorite = await connection('favorites')
+    const favorite = await db('favorites')
       .select('user_id', 'favorited_user_id')
       .first();
 
@@ -350,14 +348,12 @@ describe('FavoritesController', () => {
   it('should be able to save as favorite an already favorited user', async () => {
     const [user, favorited_user] = await factory.attrsMany<User>('User', 2);
 
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
     const authorization = `Bearer ${token(user_id)}`;
 
-    const [favorited_user_id] = await connection('users').insert(
-      favorited_user,
-    );
+    const [favorited_user_id] = await db('users').insert(favorited_user);
 
-    await connection('favorites').insert({ user_id, favorited_user_id });
+    await db('favorites').insert({ user_id, favorited_user_id });
 
     await request(app)
       .post('/v1/favorites')
@@ -370,7 +366,7 @@ describe('FavoritesController', () => {
 
   it('should not be able to save yourself as favorite', async () => {
     const user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
     const authorization = `Bearer ${token(user_id)}`;
 
     const response = await request(app)
@@ -392,7 +388,7 @@ describe('FavoritesController', () => {
 
   it('should not be able to save as favorite an user that not exists', async () => {
     const user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
     const authorization = `Bearer ${token(user_id)}`;
 
     const response = await request(app)

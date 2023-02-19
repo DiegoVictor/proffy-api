@@ -2,7 +2,7 @@ import request from 'supertest';
 import { faker } from '@faker-js/faker';
 import bcrypt from 'bcryptjs';
 
-import connection from '../../src/database/sql';
+import { db } from '../../src/database/sql';
 import factory from '../utils/factory';
 import app from '../../src/app';
 import token from '../utils/jwtoken';
@@ -19,18 +19,18 @@ interface User {
 
 describe('ResetController', () => {
   beforeEach(async () => {
-    await connection.migrate.rollback();
-    await connection.migrate.latest();
+    await db.migrate.rollback();
+    await db.migrate.latest();
   });
 
   afterAll(async () => {
-    await connection.destroy();
+    await db.destroy();
   });
 
   it('should be able to update user password', async () => {
     const password = faker.random.alphaNumeric(16);
     const user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
 
     const resetPasswordToken = token(user_id);
 
@@ -40,7 +40,7 @@ describe('ResetController', () => {
       token: resetPasswordToken,
     });
 
-    const updatedUser = await connection('users')
+    const updatedUser = await db('users')
       .where('id', user_id)
       .select('password')
       .first();
@@ -95,7 +95,7 @@ describe('ResetController', () => {
   it('should be not able to update user password', async () => {
     const password = faker.random.alphaNumeric(16);
     const user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
 
     const resetPasswordToken = token(user_id);
 

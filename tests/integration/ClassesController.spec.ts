@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { faker } from '@faker-js/faker';
 
-import connection from '../../src/database/sql';
+import { db } from '../../src/database/sql';
 import factory from '../utils/factory';
 import app from '../../src/app';
 import token from '../utils/jwtoken';
@@ -50,12 +50,12 @@ describe('ClassesController', () => {
   const url = `http://127.0.0.1:${process.env.APP_PORT}/v1`;
 
   beforeEach(async () => {
-    await connection.migrate.rollback();
-    await connection.migrate.latest();
+    await db.migrate.rollback();
+    await db.migrate.latest();
   });
 
   afterAll(async () => {
-    await connection.destroy();
+    await db.destroy();
   });
 
   it('should be able to get a page of classes', async () => {
@@ -64,7 +64,7 @@ describe('ClassesController', () => {
     const classesCount = 15;
 
     const user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
     const authorization = `Bearer ${token(user_id)}`;
 
     const classes = await factory.attrsMany<Class>(
@@ -76,7 +76,7 @@ describe('ClassesController', () => {
       })),
     );
 
-    await connection('classes').insert(classes);
+    await db('classes').insert(classes);
 
     const schedules = await factory.attrsMany<ClassSchedule>(
       'ClassSchedule',
@@ -88,7 +88,7 @@ describe('ClassesController', () => {
       })),
     );
 
-    await connection('class_schedule').insert(
+    await db('class_schedule').insert(
       schedules.map((schedule, index) => ({
         ...schedule,
         class_id: index + 1,
@@ -99,7 +99,7 @@ describe('ClassesController', () => {
       .get(`/v1/classes?week_day=${week_day}&subject=${subject}&time=9:00`)
       .set('Authorization', authorization);
 
-    const savedClasses = await connection('classes')
+    const savedClasses = await db('classes')
       .join('users', 'classes.user_id', '=', 'users.id')
       .where('classes.subject', '=', subject)
       .whereExists(function () {
@@ -124,7 +124,7 @@ describe('ClassesController', () => {
         'users.bio',
       );
 
-    const savedSchedules = await connection('class_schedule')
+    const savedSchedules = await db('class_schedule')
       .whereIn(
         'class_id',
         savedClasses.map(classItem => classItem.id),
@@ -155,7 +155,7 @@ describe('ClassesController', () => {
     const classesCount = 15;
 
     const user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
     const authorization = `Bearer ${token(user_id)}`;
 
     const classes = await factory.attrsMany<Class>(
@@ -167,7 +167,7 @@ describe('ClassesController', () => {
       })),
     );
 
-    await connection('classes').insert(classes);
+    await db('classes').insert(classes);
 
     const schedules = await factory.attrsMany<ClassSchedule>(
       'ClassSchedule',
@@ -179,7 +179,7 @@ describe('ClassesController', () => {
       })),
     );
 
-    await connection('class_schedule').insert(
+    await db('class_schedule').insert(
       schedules.map((schedule, index) => ({
         ...schedule,
         class_id: index + 1,
@@ -192,7 +192,7 @@ describe('ClassesController', () => {
       )
       .set('Authorization', authorization);
 
-    const savedClasses = await connection('classes')
+    const savedClasses = await db('classes')
       .join('users', 'classes.user_id', '=', 'users.id')
       .where('classes.subject', '=', subject)
       .whereExists(function () {
@@ -218,7 +218,7 @@ describe('ClassesController', () => {
         'users.bio',
       );
 
-    const savedSchedules = await connection('class_schedule')
+    const savedSchedules = await db('class_schedule')
       .whereIn(
         'class_id',
         savedClasses.map(classItem => classItem.id),
@@ -249,7 +249,7 @@ describe('ClassesController', () => {
     const classesCount = 5;
 
     const user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
     const authorization = `Bearer ${token(user_id)}`;
 
     const classes = await factory.attrsMany<Class>(
@@ -261,7 +261,7 @@ describe('ClassesController', () => {
       })),
     );
 
-    await connection('classes').insert(classes);
+    await db('classes').insert(classes);
 
     const schedules = await factory.attrsMany<ClassSchedule>(
       'ClassSchedule',
@@ -273,7 +273,7 @@ describe('ClassesController', () => {
       })),
     );
 
-    await connection('class_schedule').insert(
+    await db('class_schedule').insert(
       schedules.map((schedule, index) => ({
         ...schedule,
         class_id: index + 1,
@@ -284,7 +284,7 @@ describe('ClassesController', () => {
       .get(`/v1/classes?week_day=${week_day}&subject=${subject}`)
       .set('Authorization', authorization);
 
-    const savedClasses = await connection('classes')
+    const savedClasses = await db('classes')
       .join('users', 'classes.user_id', '=', 'users.id')
       .where('classes.subject', '=', subject)
       .whereExists(function () {
@@ -307,7 +307,7 @@ describe('ClassesController', () => {
         'users.bio',
       );
 
-    const savedSchedules = await connection('class_schedule')
+    const savedSchedules = await db('class_schedule')
       .whereIn(
         'class_id',
         savedClasses.map(classItem => classItem.id),
@@ -338,7 +338,7 @@ describe('ClassesController', () => {
     const classesCount = 5;
 
     const user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
     const authorization = `Bearer ${token(user_id)}`;
 
     const classes = await factory.attrsMany<Class>(
@@ -350,7 +350,7 @@ describe('ClassesController', () => {
       })),
     );
 
-    await connection('classes').insert(classes);
+    await db('classes').insert(classes);
 
     const schedules = await factory.attrsMany<ClassSchedule>(
       'ClassSchedule',
@@ -362,7 +362,7 @@ describe('ClassesController', () => {
       })),
     );
 
-    await connection('class_schedule').insert(
+    await db('class_schedule').insert(
       schedules.map((schedule, index) => ({
         ...schedule,
         class_id: index + 1,
@@ -373,7 +373,7 @@ describe('ClassesController', () => {
       .get(`/v1/classes`)
       .set('Authorization', authorization);
 
-    const savedClasses = await connection('classes')
+    const savedClasses = await db('classes')
       .join('users', 'classes.user_id', '=', 'users.id')
       .limit(10)
       .select(
@@ -389,7 +389,7 @@ describe('ClassesController', () => {
         'users.bio',
       );
 
-    const savedSchedules = await connection('class_schedule')
+    const savedSchedules = await db('class_schedule')
       .whereIn(
         'class_id',
         savedClasses.map(classItem => classItem.id),
@@ -425,7 +425,7 @@ describe('ClassesController', () => {
       },
     ];
     const user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
     const authorization = `Bearer ${token(user_id)}`;
 
     await request(app)
@@ -440,16 +440,14 @@ describe('ClassesController', () => {
         schedules,
       });
 
-    const classItem = await connection('classes')
-      .where('user_id', user_id)
-      .first();
+    const classItem = await db('classes').where('user_id', user_id).first();
     expect(classItem).toMatchObject({
       id: expect.any(Number),
       subject,
       cost,
     });
 
-    const classSchedule = await connection('class_schedule')
+    const classSchedule = await db('class_schedule')
       .where('class_id', classItem.id)
       .first();
     expect(classSchedule).toMatchObject({
@@ -470,11 +468,11 @@ describe('ClassesController', () => {
       },
     ];
     const user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
     const authorization = `Bearer ${token(user_id)}`;
 
     const classItem = await factory.attrs<Class>('Class', { user_id });
-    const [class_id] = await connection('classes').insert(classItem);
+    const [class_id] = await db('classes').insert(classItem);
     const cost = classItem.cost + 1;
 
     await request(app)
@@ -489,16 +487,14 @@ describe('ClassesController', () => {
         schedules,
       });
 
-    const updateClass = await connection('classes')
-      .where('id', class_id)
-      .first();
+    const updateClass = await db('classes').where('id', class_id).first();
     expect(updateClass).toMatchObject({
       id: expect.any(Number),
       subject,
       cost,
     });
 
-    const classSchedule = await connection('class_schedule')
+    const classSchedule = await db('class_schedule')
       .where('class_id', class_id)
       .first();
     expect(classSchedule).toMatchObject({
@@ -519,11 +515,11 @@ describe('ClassesController', () => {
       },
     ];
     const user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
     const authorization = `Bearer ${token(user_id)}`;
 
     const classItem = await factory.attrs<Class>('Class', { user_id });
-    const [class_id] = await connection('classes').insert(classItem);
+    const [class_id] = await db('classes').insert(classItem);
 
     await request(app)
       .post(`/v1/classes`)
@@ -537,16 +533,14 @@ describe('ClassesController', () => {
         schedules,
       });
 
-    const updateClass = await connection('classes')
-      .where('id', class_id)
-      .first();
+    const updateClass = await db('classes').where('id', class_id).first();
     expect(updateClass).toMatchObject({
       id: expect.any(Number),
       subject,
       cost: classItem.cost,
     });
 
-    const classSchedule = await connection('class_schedule')
+    const classSchedule = await db('class_schedule')
       .where('class_id', class_id)
       .first();
     expect(classSchedule).toMatchObject({
@@ -566,11 +560,11 @@ describe('ClassesController', () => {
       },
     ];
     const user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
     const authorization = `Bearer ${token(user_id)}`;
 
     const classItem = await factory.attrs<Class>('Class', { user_id });
-    const [class_id] = await connection('classes').insert(classItem);
+    const [class_id] = await db('classes').insert(classItem);
     const { subject, cost } = classItem;
 
     await request(app)
@@ -585,16 +579,14 @@ describe('ClassesController', () => {
         schedules,
       });
 
-    const updateClass = await connection('classes')
-      .where('id', class_id)
-      .first();
+    const updateClass = await db('classes').where('id', class_id).first();
     expect(updateClass).toMatchObject({
       id: expect.any(Number),
       subject,
       cost: classItem.cost,
     });
 
-    const classSchedule = await connection('class_schedule')
+    const classSchedule = await db('class_schedule')
       .where('class_id', class_id)
       .first();
     expect(classSchedule).toMatchObject({
@@ -607,17 +599,17 @@ describe('ClassesController', () => {
 
   it('should be able to retrieve a class', async () => {
     const user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
 
     const classItem = await factory.attrs<Class>('Class', {
       user_id,
     });
-    const [class_id] = await connection('classes').insert(classItem);
+    const [class_id] = await db('classes').insert(classItem);
 
     const schedules = await factory.attrs<ClassSchedule>('ClassSchedule', {
       class_id,
     });
-    await connection('class_schedule').insert(schedules);
+    await db('class_schedule').insert(schedules);
 
     const authorization = `Bearer ${token(user_id)}`;
 
@@ -641,7 +633,7 @@ describe('ClassesController', () => {
 
   it('should not be able to retrieve a class that not exists', async () => {
     const user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
     const authorization = `Bearer ${token(user_id)}`;
 
     const class_id = faker.random.number();
@@ -672,7 +664,7 @@ describe('ClassesController', () => {
       },
     ];
     const user = await factory.attrs<User>('User');
-    const [user_id] = await connection('users').insert(user);
+    const [user_id] = await db('users').insert(user);
 
     const authorization = `Bearer ${token(user_id)}`;
 
@@ -689,8 +681,8 @@ describe('ClassesController', () => {
         whatsapp: user.whatsapp,
       });
 
-    const [classesCount] = await connection('classes').count();
-    const [classScheduleCount] = await connection('class_schedule').count();
+    const [classesCount] = await db('classes').count();
+    const [classScheduleCount] = await db('class_schedule').count();
 
     expect(classesCount['count(*)']).toBe(0);
     expect(classScheduleCount['count(*)']).toBe(0);
@@ -729,8 +721,8 @@ describe('ClassesController', () => {
         whatsapp: faker.phone.phoneNumber(),
       });
 
-    const [classesCount] = await connection('classes').count();
-    const [classScheduleCount] = await connection('class_schedule').count();
+    const [classesCount] = await db('classes').count();
+    const [classScheduleCount] = await db('class_schedule').count();
 
     expect(classesCount['count(*)']).toBe(0);
     expect(classScheduleCount['count(*)']).toBe(0);
