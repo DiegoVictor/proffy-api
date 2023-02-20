@@ -15,11 +15,9 @@ Responsible for provide data to the [`web`](https://github.com/DiegoVictor/proff
 ## Table of Contents
 * [Installing](#installing)
   * [Configuring](#configuring)
-    * [Redis](#redis)
     * [SQLite](#sqlite)
       * [Migrations](#migrations)
     * [.env](#env)
-    * [Rate Limit & Brute Force (Optional)](#rate-limit--brute-force-optional)
 * [Usage](#usage)
   * [Error Handling](#error-handling)
     * [Errors Reference](#errors-reference)
@@ -45,13 +43,7 @@ $ npm install
 > Was installed and configured the [`eslint`](https://eslint.org/) and [`prettier`](https://prettier.io/) to keep the code clean and patterned.
 
 ## Configuring
-The application uses two databases: [SQLite](https://www.sqlite.org/index.html) and [Redis](https://redis.io/).
-
-### Redis
-Responsible to store data utilized by the rate limit middleware and brute force prevention. For the fastest setup is recommended to use [docker](https://www.docker.com), you can create a redis container like so:
-```
-$ docker run --name proffy-redis -d -p 6379:6379 redis:alpine
-```
+The application uses just one database: [SQLite](https://www.sqlite.org/index.html).
 
 ### SQLite
 Store the NGOs and its incidents. For more information to how to setup your database see:
@@ -83,23 +75,8 @@ In this file you may configure the environment, your app's port and a url to doc
 |MAIL_PASSWORD|Password to authenticate in the email service| -
 |JWT_SECRET|A alphanumeric random string. Used to create signed tokens.| -
 |JWT_EXPIRATION_TIME|How long time will be the token valid. See [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken#usage) repo for more information.|`7d`
-|REDIS_HOST|Redis host. For Windows users using Docker Toolbox maybe be necessary in your `.env` file set the host to `192.168.99.100` (docker machine IP) instead of localhost or `127.0.0.1`.|`127.0.0.1`
-|REDIS_PORT|Redis port.|`6379`
 |DOCS_URL|An url to docs where users can find more information about the app's internal code errors.|`https://github.com/DiegoVictor/proffy-api#errors-reference`
 > For more information about the `MAIL_*` keys configurations see [nodemailer](https://nodemailer.com) website, since this project uses it to mail.
-
-## Rate Limit & Brute Force (Optional)
-The project comes pre-configured, but you can adjust it as your needs.
-* `src/config/security.ts`
-
-|key|description|default
-|---|---|---
-|duration|Number of seconds before consumed points are reset.|`300`
-|points|Maximum number of points can be consumed over duration.|`10`
-|freeRetries|Maximum number of points can be consumed over duration.|`3`
-|prefix|Maximum number of points can be consumed over duration.|`bruteforce_`
-
-> The lib [`rate-limiter-flexible`](https://github.com/animir/node-rate-limiter-flexible) was used to rate the API's limits, for more configuration information go to [Options](https://github.com/animir/node-rate-limiter-flexible/wiki/Options#options) page and also used to configure brute force prevention, but with a different method of configuration that you can see in [ExpressBrute migration](https://github.com/animir/node-rate-limiter-flexible/wiki/ExpressBrute-migration#options).
 
 # Usage
 To start up the app run:
