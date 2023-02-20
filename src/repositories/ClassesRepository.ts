@@ -1,4 +1,4 @@
-import Knex from 'knex';
+import { Knex } from 'knex';
 
 import { db } from '../database/sql';
 
@@ -71,6 +71,8 @@ export class ClassesRepository {
           .whereRaw('`class_schedule`.`to` > ??', [time]);
       });
     }
+
+    query;
 
     return query;
   }
