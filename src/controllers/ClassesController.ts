@@ -55,9 +55,9 @@ export class ClassesController {
     );
     response.header('X-Total-Count', count);
 
-    const pages_total = Math.ceil(parseInt(count, 10) / limit);
-    if (pages_total > 1) {
-      response.links(paginationLinks(page, pages_total, currentUrl));
+    const pagesTotal = Math.ceil(parseInt(count, 10) / limit);
+    if (pagesTotal > 1) {
+      response.links(paginationLinks(page, pagesTotal, currentUrl));
     }
 
     return response.json(

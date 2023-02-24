@@ -72,8 +72,6 @@ export class ClassesRepository {
       });
     }
 
-    query;
-
     return query;
   }
 
