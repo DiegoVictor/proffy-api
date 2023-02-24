@@ -175,6 +175,16 @@ GET http://localhost:3333/v1/classes
 |`/favorites`|POST|:x:|Body with `user_id` from user that intending to be favorite.|Set a proffy as favorite.|Bearer
 
 ### Requests
+* `POST /sessions`
+
+Request body:
+```json
+{
+  "email": "johndoe@example.com",
+  "password": "123456"
+}
+```
+
 * `POST /connections`
 
 Request body:
@@ -206,6 +216,41 @@ Request body:
       "to": "11:00"
     }
   ]
+}
+```
+
+* `POST /users`
+
+Request body:
+```json
+{
+  "name": "John",
+  "surname": "Doe",
+  "email": "johndoe@example.com",
+  "password": "123456",
+  "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1103.jpg",
+  "whatsapp": "1125585262",
+  "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+}
+```
+
+* `POST /users/forgot_password`
+
+Request body:
+```json
+{
+  "email": "johndoe@example.com"
+}
+```
+
+* `POST /users/reset_password`
+
+Request body:
+```json
+{
+  "password": "123456",
+  "password_confirmation": "123456",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJpZCI6IjE4ZjZkNzYzLTQ1NWMtNDEwNC1iMmFlLWUwNzE2N2JhOTMwYyJ9.uqiIJHRc6wsNCBy3MVtO-hDWwvs_afIhv7adswrUas4"
 }
 ```
 
