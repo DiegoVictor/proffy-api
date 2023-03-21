@@ -3,8 +3,6 @@ import { celebrate, Segments, Joi } from 'celebrate';
 export default celebrate({
   [Segments.BODY]: {
     user_id: Joi.number().required(),
-    bio: Joi.string().required(),
-    whatsapp: Joi.string().min(11).required(),
     subject: Joi.string().required(),
     cost: Joi.number().required(),
     schedules: Joi.array().items(
