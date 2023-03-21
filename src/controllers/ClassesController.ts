@@ -84,14 +84,12 @@ export class ClassesController {
   }
 
   async store(request: Request, response: Response): Promise<Response> {
-    const { bio, whatsapp, cost, subject, schedules } = request.body;
+    const { cost, subject, schedules } = request.body;
     const { id: user_id } = request.user;
 
     const createOrUpdateClassService = new CreateOrUpdateClassService();
     await createOrUpdateClassService.execute({
       user_id,
-      bio,
-      whatsapp,
       cost,
       subject,
       schedules,

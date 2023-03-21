@@ -11,8 +11,6 @@ interface Schedule {
 
 interface Request {
   user_id: number;
-  bio: string;
-  whatsapp: string;
   cost: number;
   subject: string;
   schedules: Schedule[];
@@ -21,8 +19,6 @@ interface Request {
 export class CreateOrUpdateClassService {
   public async execute({
     user_id,
-    bio,
-    whatsapp,
     cost,
     subject,
     schedules,
@@ -34,15 +30,9 @@ export class CreateOrUpdateClassService {
 
     const trx = await db.transaction();
     try {
-      if (user.bio !== bio || user.whatsapp !== whatsapp) {
-        await trx('users').where('id', user_id).update({
-          bio,
-          whatsapp,
-        });
-      }
-
       let class_id: number;
       const classItem = await trx('classes').where('user_id', user_id).first();
+
       if (classItem) {
         class_id = classItem.id;
         if (classItem.cost !== cost || classItem.subject !== subject) {
