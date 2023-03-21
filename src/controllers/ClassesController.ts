@@ -5,6 +5,7 @@ import { convertStringHourToMinutes } from '../utils/convertStringHourToMinutes'
 import { CreateOrUpdateClassService } from '../services/CreateOrUpdateClassService';
 import { ClassesRepository } from '../repositories/ClassesRepository';
 import { GetOneClassService } from '../services/GetOneClassService';
+import { GetClassesService } from '../services/GetClassesService';
 
 interface CustomRequest {
   query: {
@@ -26,33 +27,17 @@ export class ClassesController {
     const limit = 10;
 
     const { week_day, subject, time } = request.query;
-    const timeInMinutes = time ? convertStringHourToMinutes(time) : null;
+    const time_in_minutes = time ? convertStringHourToMinutes(time) : null;
 
-    const classes = await classesRepository
-      .queryBySubjectInWeekDayAtTime(subject, week_day, timeInMinutes)
-      .limit(limit)
-      .offset((page - 1) * limit)
-      .select(
-        'classes.id',
-        'classes.subject',
-        'classes.cost',
-        'users.id as user_id',
-        'users.name',
-        'users.email',
-        'users.surname',
-        'users.avatar',
-        'users.whatsapp',
-        'users.bio',
-      );
-    const classesSerialized = await classesRepository.getClassesSchedules(
-      classes,
-    );
-
-    const count = await classesRepository.countBySubjectInWeekDayAtTime(
+    const getClassesService = new GetClassesService(classesRepository);
+    const { count, classes } = await getClassesService.execute({
+      limit,
+      page,
       subject,
       week_day,
-      timeInMinutes,
-    );
+      time_in_minutes,
+    });
+
     response.header('X-Total-Count', count);
 
     const pagesTotal = Math.ceil(parseInt(count, 10) / limit);
@@ -61,7 +46,7 @@ export class ClassesController {
     }
 
     return response.json(
-      classesSerialized.map(classItem => ({
+      classes.map(classItem => ({
         ...classItem,
         url: `${currentUrl}/${classItem.id}`,
         user_url: `${hostUrl}/v1/users/${classItem.user_id}`,
