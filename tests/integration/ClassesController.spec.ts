@@ -427,8 +427,6 @@ describe('ClassesController', () => {
       .send({
         user_id,
         subject,
-        bio: faker.lorem.paragraph(),
-        whatsapp: user.whatsapp,
         cost,
         schedules,
       });
@@ -474,8 +472,6 @@ describe('ClassesController', () => {
       .send({
         user_id,
         subject,
-        bio: faker.lorem.paragraph(),
-        whatsapp: user.whatsapp,
         cost,
         schedules,
       });
@@ -520,8 +516,6 @@ describe('ClassesController', () => {
       .send({
         user_id,
         subject,
-        bio: faker.lorem.paragraph(),
-        whatsapp: user.whatsapp,
         cost: classItem.cost,
         schedules,
       });
@@ -566,8 +560,6 @@ describe('ClassesController', () => {
       .send({
         user_id,
         subject,
-        bio: faker.lorem.paragraph(),
-        whatsapp: user.whatsapp,
         cost,
         schedules,
       });
@@ -614,7 +606,6 @@ describe('ClassesController', () => {
     delete user.password;
     delete classItem.user_id;
     expect(response.body).toEqual({
-      ...user,
       ...classItem,
       id: expect.any(Number),
       user_id,
@@ -670,8 +661,6 @@ describe('ClassesController', () => {
         subject,
         cost,
         schedules,
-        bio: user.bio,
-        whatsapp: user.whatsapp,
       });
 
     const [classesCount] = await db('classes').count();
@@ -710,8 +699,6 @@ describe('ClassesController', () => {
         subject,
         cost,
         schedules,
-        bio: faker.lorem.paragraph(),
-        whatsapp: faker.phone.number(),
       });
 
     const [classesCount] = await db('classes').count();
