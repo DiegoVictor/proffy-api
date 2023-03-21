@@ -4,7 +4,7 @@ import paginationLinks from '../helpers/paginationLinks';
 import { convertStringHourToMinutes } from '../utils/convertStringHourToMinutes';
 import { CreateOrUpdateClassService } from '../services/CreateOrUpdateClassService';
 import { ClassesRepository } from '../repositories/ClassesRepository';
-import { GetClassService } from '../services/GetClassService';
+import { GetOneClassService } from '../services/GetOneClassService';
 
 interface CustomRequest {
   query: {
@@ -73,8 +73,8 @@ export class ClassesController {
     const { hostUrl, currentUrl } = request;
     const { id } = request.params;
 
-    const getClassService = new GetClassService();
-    const classItem = await getClassService.execute({ id });
+    const getOneClassService = new GetOneClassService();
+    const classItem = await getOneClassService.execute({ id });
 
     return response.json({
       ...classItem,

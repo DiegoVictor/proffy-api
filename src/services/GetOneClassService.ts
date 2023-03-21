@@ -9,11 +9,6 @@ interface Request {
 interface SerializedClass {
   id: number;
   user_id?: number;
-  whatsapp: string;
-  name: string;
-  surname: string;
-  bio: string;
-  avatar: string;
   subject: string;
   cost: number;
   schedules: {
@@ -23,7 +18,7 @@ interface SerializedClass {
   }[];
 }
 
-export class GetClassService {
+export class GetOneClassService {
   public async execute({ id }: Request): Promise<SerializedClass> {
     const classItem = await db('classes')
       .join('users', 'classes.user_id', '=', 'users.id')
@@ -33,12 +28,6 @@ export class GetClassService {
         'classes.subject',
         'classes.cost',
         'users.id as user_id',
-        'users.email',
-        'users.name',
-        'users.surname',
-        'users.avatar',
-        'users.whatsapp',
-        'users.bio',
       )
       .first();
 
