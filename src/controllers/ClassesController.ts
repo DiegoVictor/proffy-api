@@ -4,7 +4,7 @@ import paginationLinks from '../helpers/paginationLinks';
 import { convertStringHourToMinutes } from '../utils/convertStringHourToMinutes';
 import { CreateOrUpdateClassService } from '../services/CreateOrUpdateClassService';
 import { ClassesRepository } from '../repositories/ClassesRepository';
-import { GetOneClassService } from '../services/GetOneClassService';
+import { GetUserClassService } from '../services/GetUserClassService';
 import { GetClassesService } from '../services/GetClassesService';
 
 interface CustomRequest {
@@ -55,17 +55,12 @@ export class ClassesController {
   }
 
   async show(request: Request, response: Response): Promise<Response> {
-    const { hostUrl, currentUrl } = request;
-    const { id } = request.params;
+    const { id } = request.user;
 
-    const getOneClassService = new GetOneClassService();
-    const classItem = await getOneClassService.execute({ id });
+    const getUserClassService = new GetUserClassService();
+    const classItem = await getUserClassService.execute({ user_id: id });
 
-    return response.json({
-      ...classItem,
-      url: currentUrl,
-      user_url: `${hostUrl}/v1/users/${classItem.user_id}`,
-    });
+    return response.json(classItem);
   }
 
   async store(request: Request, response: Response): Promise<Response> {
