@@ -599,7 +599,7 @@ describe('ClassesController', () => {
     const authorization = `Bearer ${token(user_id)}`;
 
     const response = await request(app)
-      .get(`/v1/classes/${class_id}`)
+      .get(`/v1/classes/my-class`)
       .set('Authorization', authorization)
       .send();
 
@@ -608,10 +608,7 @@ describe('ClassesController', () => {
     expect(response.body).toEqual({
       ...classItem,
       id: expect.any(Number),
-      user_id,
       schedules: [schedules],
-      url: `${url}/classes/${class_id}`,
-      user_url: `${url}/users/${user_id}`,
     });
   });
 
@@ -620,10 +617,8 @@ describe('ClassesController', () => {
     const [user_id] = await db('users').insert(user);
     const authorization = `Bearer ${token(user_id)}`;
 
-    const class_id = faker.datatype.number();
-
     const response = await request(app)
-      .get(`/v1/classes/${class_id}`)
+      .get(`/v1/classes/my-class`)
       .set('Authorization', authorization)
       .expect(404)
       .send();
