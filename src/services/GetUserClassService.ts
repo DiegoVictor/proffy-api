@@ -3,12 +3,11 @@ import { notFound } from '@hapi/boom';
 import { db } from '../database/sql';
 
 interface Request {
-  id: string;
+  user_id: string | number;
 }
 
 interface SerializedClass {
   id: number;
-  user_id?: number;
   subject: string;
   cost: number;
   schedules: {
@@ -18,17 +17,11 @@ interface SerializedClass {
   }[];
 }
 
-export class GetOneClassService {
-  public async execute({ id }: Request): Promise<SerializedClass> {
+export class GetUserClassService {
+  public async execute({ user_id }: Request): Promise<SerializedClass> {
     const classItem = await db('classes')
-      .join('users', 'classes.user_id', '=', 'users.id')
-      .where('classes.id', id)
-      .select(
-        'classes.id as id',
-        'classes.subject',
-        'classes.cost',
-        'users.id as user_id',
-      )
+      .where('classes.User_id', user_id)
+      .select('classes.id as id', 'classes.subject', 'classes.cost')
       .first();
 
     if (!classItem) {
@@ -36,7 +29,7 @@ export class GetOneClassService {
     }
 
     const schedules = await db('class_schedule')
-      .where('class_id', id)
+      .where('class_id', classItem.id)
       .select('week_day', 'from', 'to', 'class_id');
 
     return {
