@@ -40,7 +40,12 @@ describe('SessionsController', () => {
       .send({ email: user.email, password });
 
     expect(response.body).toStrictEqual({
-      user: { id: user_id, name: user.name, email: user.email },
+      user: {
+        id: user_id,
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+      },
       token: expect.any(String),
     });
   });
