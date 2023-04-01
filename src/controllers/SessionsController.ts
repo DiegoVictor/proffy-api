@@ -23,6 +23,7 @@ export class SessionsController {
         id: user.id,
         email: user.email,
         name: user.name,
+        surname: user.surname,
       },
       token: jwt.sign({ id: user.id }, String(process.env.JWT_SECRET), {
         expiresIn: process.env.JWT_EXPIRATION_TIME,
