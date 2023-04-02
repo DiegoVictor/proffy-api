@@ -124,4 +124,48 @@ describe('UsersController', () => {
       docs: process.env.DOCS_URL,
     });
   });
+
+  it('should be able to update a user', async () => {
+    const user = await factory.attrs<User>('User');
+    const [user_id] = await db('users').insert(user);
+
+    const authorization = `Bearer ${token(user_id)}`;
+
+    const { name, surname, avatar, whatsapp, bio } = await factory.attrs<User>(
+      'User',
+    );
+    await request(app)
+      .put('/v1/users')
+      .set('Authorization', authorization)
+      .expect(204)
+      .send({ name, surname, avatar, whatsapp, bio });
+
+    const updatedUser = await db('users')
+      .select('name', 'surname', 'avatar', 'whatsapp', 'bio')
+      .first();
+
+    expect(updatedUser).toEqual({ name, surname, avatar, whatsapp, bio });
+  });
+
+  it('should not be able to update a user that not exists', async () => {
+    const user_id = faker.datatype.number();
+    const authorization = `Bearer ${token(user_id)}`;
+
+    const { name, surname, avatar, whatsapp, bio } = await factory.attrs<User>(
+      'User',
+    );
+    const response = await request(app)
+      .put('/v1/users')
+      .set('Authorization', authorization)
+      .expect(404)
+      .send({ name, surname, avatar, whatsapp, bio });
+
+    expect(response.body).toEqual({
+      statusCode: 404,
+      error: 'Not Found',
+      message: 'User not found',
+      code: 244,
+      docs: process.env.DOCS_URL,
+    });
+  });
 });
