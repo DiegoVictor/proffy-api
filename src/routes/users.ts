@@ -4,7 +4,9 @@ import { ForgotPasswordController } from '../controllers/ForgotPasswordControlle
 import { ResetPasswordController } from '../controllers/ResetPasswordController';
 import { UsersController } from '../controllers/UsersController';
 import forgotPasswordValidator from '../validators/forgotPasswordValidator';
-import userValidator from '../validators/userValidator';
+import userValidator, {
+  updateUserValidator,
+} from '../validators/userValidator';
 import resetPasswordValidator from '../validators/resetPasswordValidator';
 import idValidator from '../validators/idValidator';
 import Auth from '../middlewares/Auth';
@@ -30,5 +32,6 @@ app.post(
 app.use(Auth);
 
 app.get('/:id', idValidator, usersController.show);
+app.put('/', updateUserValidator, usersController.update);
 
 export default app;
