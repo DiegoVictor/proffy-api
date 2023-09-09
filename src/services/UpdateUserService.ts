@@ -21,9 +21,6 @@ export class UpdateUserService {
       throw notFound('User not found', { code: 244 });
     }
 
-    await db('users').update({
-      ...data,
-      id: user_id,
-    });
+    await db('users').where({ id: user_id }).update(data);
   }
 }
