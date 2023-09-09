@@ -11,9 +11,9 @@ factory.define(
       const hashedPassword = await hash(faker.internet.password(), 8);
       return hashedPassword;
     },
-    name: faker.name.fullName,
-    surname: faker.name.lastName,
-    avatar: faker.image.imageUrl,
+    name: faker.person.fullName,
+    surname: faker.person.lastName,
+    avatar: faker.image.url,
     whatsapp: faker.phone.number,
     bio: faker.lorem.paragraph,
   },
@@ -23,18 +23,18 @@ factory.define(
   'Class',
   {},
   {
-    subject: faker.name.jobArea,
+    subject: faker.person.jobArea,
     cost: () => Number(faker.finance.amount()),
-    user_id: faker.datatype.number,
+    user_id: faker.number.int,
   },
 );
 
 factory.define('ClassSchedule', {}, () => {
-  const from = faker.datatype.number({ min: 0, max: 23 });
-  const to = faker.datatype.number({ min: from + 1, max: 24 });
+  const from = faker.number.int({ min: 0, max: 23 });
+  const to = faker.number.int({ min: from + 1, max: 24 });
 
   return {
-    week_day: () => faker.datatype.number({ min: 0, max: 6 }),
+    week_day: () => faker.number.int({ min: 0, max: 6 }),
     from: from * 60,
     to: to * 60,
   };
@@ -44,7 +44,7 @@ factory.define(
   'Connection',
   {},
   {
-    user_id: faker.datatype.number,
+    user_id: faker.number.int,
   },
 );
 

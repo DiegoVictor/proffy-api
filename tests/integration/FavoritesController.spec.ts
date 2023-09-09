@@ -396,7 +396,7 @@ describe('FavoritesController', () => {
       .expect(400)
       .set('Authorization', authorization)
       .send({
-        user_id: faker.datatype.number(),
+        user_id: faker.number.int(),
       });
 
     expect(response.body).toStrictEqual({

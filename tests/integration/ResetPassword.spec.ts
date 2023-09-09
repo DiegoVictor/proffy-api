@@ -28,7 +28,7 @@ describe('ResetController', () => {
   });
 
   it('should be able to update user password', async () => {
-    const password = faker.random.alphaNumeric(16);
+    const password = faker.string.alphanumeric(16);
     const user = await factory.attrs<User>('User');
     const [user_id] = await db('users').insert(user);
 
@@ -49,8 +49,8 @@ describe('ResetController', () => {
   });
 
   it('should not be able to update user password with invalid token', async () => {
-    const password = faker.random.alphaNumeric(16);
-    const resetPasswordToken = faker.random.alphaNumeric(40);
+    const password = faker.string.alphanumeric(16);
+    const resetPasswordToken = faker.string.alphanumeric(40);
 
     const response = await request(app)
       .post('/v1/users/reset_password')
@@ -71,8 +71,8 @@ describe('ResetController', () => {
   });
 
   it("should not be able to update a invalid user's password", async () => {
-    const password = faker.random.alphaNumeric(16);
-    const resetPasswordToken = token(faker.datatype.number());
+    const password = faker.string.alphanumeric(16);
+    const resetPasswordToken = token(faker.number.int());
 
     const response = await request(app)
       .post('/v1/users/reset_password')
@@ -93,7 +93,7 @@ describe('ResetController', () => {
   });
 
   it('should be not able to update user password', async () => {
-    const password = faker.random.alphaNumeric(16);
+    const password = faker.string.alphanumeric(16);
     const user = await factory.attrs<User>('User');
     const [user_id] = await db('users').insert(user);
 

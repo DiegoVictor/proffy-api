@@ -409,7 +409,7 @@ describe('ClassesController', () => {
 
   it('should be able to create new class', async () => {
     const subject = 'Matemática';
-    const cost = faker.datatype.number();
+    const cost = faker.number.int();
     const schedules = [
       {
         week_day: 0,
@@ -634,7 +634,7 @@ describe('ClassesController', () => {
 
   it('should not be able to create new class', async () => {
     const subject = 'Matemática';
-    const cost = faker.datatype.number();
+    const cost = faker.number.int();
     const schedules = [
       {
         week_day: 0,
@@ -674,7 +674,7 @@ describe('ClassesController', () => {
 
   it('should not be able to create new class with an user that not exists', async () => {
     const subject = 'Matemática';
-    const cost = faker.datatype.number();
+    const cost = faker.number.int();
     const schedules = [
       {
         week_day: 0,
@@ -682,7 +682,7 @@ describe('ClassesController', () => {
         to: '13:00',
       },
     ];
-    const user_id = faker.datatype.number();
+    const user_id = faker.number.int();
     const authorization = `Bearer ${token(user_id)}`;
 
     const response = await request(app)
