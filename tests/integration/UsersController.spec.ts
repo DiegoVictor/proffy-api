@@ -131,9 +131,8 @@ describe('UsersController', () => {
 
     const authorization = `Bearer ${token(user_id)}`;
 
-    const { name, surname, avatar, whatsapp, bio } = await factory.attrs<User>(
-      'User',
-    );
+    const { name, surname, avatar, whatsapp, bio } =
+      await factory.attrs<User>('User');
     await request(app)
       .put('/v1/users')
       .set('Authorization', authorization)
@@ -151,9 +150,8 @@ describe('UsersController', () => {
     const user_id = faker.number.int();
     const authorization = `Bearer ${token(user_id)}`;
 
-    const { name, surname, avatar, whatsapp, bio } = await factory.attrs<User>(
-      'User',
-    );
+    const { name, surname, avatar, whatsapp, bio } =
+      await factory.attrs<User>('User');
     const response = await request(app)
       .put('/v1/users')
       .set('Authorization', authorization)
