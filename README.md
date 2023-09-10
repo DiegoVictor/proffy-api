@@ -43,10 +43,13 @@ $ npm install
 > Was installed and configured the [`eslint`](https://eslint.org/) and [`prettier`](https://prettier.io/) to keep the code clean and patterned.
 
 ## Configuring
-The application uses just one database: [SQLite](https://www.sqlite.org/index.html).
+The application uses just one database: [SQLite](https://www.sqlite.org/index.html).  For the fastest setup is recommended to use [docker-compose](https://docs.docker.com/compose/), you just need to up all services:
+```
+$ docker-compose up -d
+```
 
 ### SQLite
-Store the NGOs and its incidents. For more information to how to setup your database see:
+Store all the users, classes and connections. For more information to how to setup your database see:
 * [knexfile.ts](http://knexjs.org/#knexfile)
 > You can find the application's `knexfile.ts` file in the root folder.
 
