@@ -32,8 +32,6 @@ export class FavoritesController {
       .limit(limit)
       .offset((page - 1) * limit)
       .select(
-        'favorites.user_id',
-        'favorites.favorited_user_id',
         'users.id as id',
         'users.name',
         'users.email',
