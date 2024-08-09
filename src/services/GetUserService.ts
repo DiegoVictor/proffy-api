@@ -41,7 +41,7 @@ interface SerializedClass {
 export class GetUserService {
   public async execute({ id }: Request): Promise<SerializedClass> {
     const user: User = await db('users')
-      .join('classes', 'users.id', '=', 'classes.user_id')
+      .leftJoin('classes', 'users.id', '=', 'classes.user_id')
       .where('users.id', id)
       .select(
         'users.id',
