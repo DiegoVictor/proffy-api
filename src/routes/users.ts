@@ -31,6 +31,7 @@ app.post(
 
 app.use(Auth);
 
+app.get('/me', usersController.show);
 app.get('/:id', idValidator, usersController.show);
 app.put('/', updateUserValidator, usersController.update);
 

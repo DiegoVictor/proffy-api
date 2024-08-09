@@ -12,7 +12,9 @@ export class UsersController {
     const { id } = request.params;
 
     const getUserService = new GetUserService();
-    const user = await getUserService.execute({ id });
+    const user = await getUserService.execute({
+      id: id ?? request.user?.id?.toString(),
+    });
 
     return response.json({
       ...user,
