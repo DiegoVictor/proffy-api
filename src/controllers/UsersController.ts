@@ -5,6 +5,7 @@ import { hash } from 'bcryptjs';
 import { db } from '../database/sql';
 import { GetUserService } from '../services/GetUserService';
 import { UpdateUserService } from '../services/UpdateUserService';
+import { hateoas } from '../utils/hateoas';
 
 export class UsersController {
   async show(request: Request, response: Response): Promise<Response> {
@@ -19,7 +20,7 @@ export class UsersController {
     return response.json({
       ...user,
       url: currentUrl,
-      class_url: `${hostUrl}/v1/classes/${user.class_id}`,
+      class_url: hateoas('classes', { url: hostUrl, id: user.class_id }),
     });
   }
 

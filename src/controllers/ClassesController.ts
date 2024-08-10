@@ -6,6 +6,7 @@ import { CreateOrUpdateClassService } from '../services/CreateOrUpdateClassServi
 import { ClassesRepository } from '../repositories/ClassesRepository';
 import { GetUserClassService } from '../services/GetUserClassService';
 import { GetClassesService } from '../services/GetClassesService';
+import { hateoas } from '../utils/hateoas';
 
 interface CustomRequest {
   query: {
@@ -48,19 +49,24 @@ export class ClassesController {
     return response.json(
       classes.map(classItem => ({
         ...classItem,
-        url: `${currentUrl}/${classItem.id}`,
-        user_url: `${hostUrl}/v1/users/${classItem.user_id}`,
+        url: hateoas('classes', { url: hostUrl, id: classItem.id }),
+        user_url: hateoas('users', { url: hostUrl, id: classItem.user_id }),
       })),
     );
   }
 
   async show(request: Request, response: Response): Promise<Response> {
+    const { hostUrl, currentUrl } = request;
     const { id } = request.user;
 
     const getUserClassService = new GetUserClassService();
     const classItem = await getUserClassService.execute({ user_id: id });
 
-    return response.json(classItem);
+    return response.json({
+      ...classItem,
+      url: currentUrl,
+      user_url: hateoas('users', { url: hostUrl, id }),
+    });
   }
 
   async store(request: Request, response: Response): Promise<Response> {

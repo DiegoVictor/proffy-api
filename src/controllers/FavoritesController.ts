@@ -4,6 +4,7 @@ import { db } from '../database/sql';
 import { FavoriteUserService } from '../services/FavoriteUserService';
 import paginationLinks from '../helpers/paginationLinks';
 import { FavoritesRepository } from '../repositories/FavoritesRepository';
+import { hateoas } from '../utils/hateoas';
 
 interface Favorite {
   id: number;
@@ -57,8 +58,8 @@ export class FavoritesController {
         schedules: schedules.filter(
           schedule => schedule.class_id === favorite.class_id,
         ),
-        user_url: `${hostUrl}/v1/users/${id}`,
-        class_url: `${hostUrl}/v1/classes/${favorite.class_id}`,
+        user_url: hateoas('users', { url: hostUrl, id }),
+        class_url: hateoas('classes', { url: hostUrl, id: favorite.class_id }),
       };
     });
 
