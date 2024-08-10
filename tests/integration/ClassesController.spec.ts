@@ -609,6 +609,8 @@ describe('ClassesController', () => {
       ...classItem,
       id: expect.any(Number),
       schedules: [schedules],
+      url: `${url}/classes/my-class`,
+      user_url: `${url}/users/${user_id}`,
     });
   });
 
