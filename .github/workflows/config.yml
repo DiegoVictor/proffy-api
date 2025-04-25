@@ -16,10 +16,10 @@ jobs:
       MAIL_PASSWORD: 'password'
       DOCS_URL: 'https://github.com/DiegoVictor/proffy-api#errors-reference'
     steps:
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: '19.6'
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Run tests
         run: |
           npm ci
