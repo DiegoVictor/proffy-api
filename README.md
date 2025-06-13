@@ -16,9 +16,9 @@ Responsible for provide data to the [`web`](https://github.com/DiegoVictor/proff
 ## Table of Contents
 * [Installing](#installing)
   * [Configuring](#configuring)
+    * [.env](#env)
     * [SQLite](#sqlite)
       * [Migrations](#migrations)
-    * [.env](#env)
 * [Usage](#usage)
   * [Error Handling](#error-handling)
     * [Errors Reference](#errors-reference)
@@ -49,22 +49,6 @@ The application uses just one database: [SQLite](https://www.sqlite.org/index.ht
 $ docker-compose up -d
 ```
 
-### SQLite
-Store all the users, classes and connections. For more information to how to setup your database see:
-* [knexfile.ts](http://knexjs.org/#knexfile)
-> You can find the application's `knexfile.ts` file in the root folder.
-
-#### Migrations
-Remember to run the SQLite database migrations:
-```
-$ yarn knex:migrate
-```
-Or:
-```
-$ npx knex migrate:latest
-```
-> See more information on [Knex Migrations](http://knexjs.org/#Migrations).
-
 ### .env
 In this file you may configure the environment, your app's port and a url to documentation (this will be returned with error responses, see [error section](#error-handling)). Rename the `.env.example` in the root directory to `.env` then just update with your settings.
 
@@ -81,6 +65,22 @@ In this file you may configure the environment, your app's port and a url to doc
 |JWT_EXPIRATION_TIME|How long time will be the token valid. See [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken#usage) repo for more information.|`7d`
 |DOCS_URL|An url to docs where users can find more information about the app's internal code errors.|`https://github.com/DiegoVictor/proffy-api#errors-reference`
 > For more information about the `MAIL_*` keys configurations see [nodemailer](https://nodemailer.com) website, since this project uses it to mail.
+
+### SQLite
+Store all the users, classes and connections. For more information to how to setup your database see:
+* [knexfile.ts](http://knexjs.org/#knexfile)
+> You can find the application's `knexfile.ts` file in the root folder.
+
+#### Migrations
+Remember to run the SQLite database migrations:
+```
+$ yarn knex:migrate
+```
+Or:
+```
+$ npx knex migrate:latest
+```
+> See more information on [Knex Migrations](http://knexjs.org/#Migrations).
 
 # Usage
 To start up the app run:
