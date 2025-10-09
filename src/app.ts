@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import 'express-async-errors';
 
 import express, { NextFunction, Response, Request } from 'express';
 import cors from 'cors';
