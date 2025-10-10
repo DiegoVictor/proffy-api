@@ -58,7 +58,7 @@ export class ClassesRepository {
         this.select('class_schedule.*')
           .from('class_schedule')
           .whereRaw('`class_schedule`.`class_id` = `classes`.`id`')
-          .whereRaw('`class_schedule`.`week_day` = ??', [weekDay]);
+          .whereRaw('`class_schedule`.`week_day` = ?', [weekDay]);
       });
     }
 
